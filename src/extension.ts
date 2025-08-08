@@ -27,6 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider.toggleCheckbox(item);
   });
 
+  const navigateToHeaderDisposable = vscode.commands.registerCommand('checkboxTree.navigateToHeader', (item: CheckboxItem) => {
+    treeDataProvider.navigateToHeader(item);
+  });
+
   // Add status bar item for completion stats
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = "$(checklist) 0/0 tasks";
@@ -62,6 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
     openPreviewDisposable,
     refreshTreeDisposable,
     toggleCheckboxDisposable,
+    navigateToHeaderDisposable,
     treeView,
     statusBarItem
   );
@@ -126,6 +131,9 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
       case 'toggle':
         toggleCheckboxAtLine(editor, message.line);
         break;
+      case 'navigate':
+        navigateToLine(editor, message.line);
+        break;
     }
   });
 
@@ -171,6 +179,24 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   }
 }
 
+function navigateToLine(editor: vscode.TextEditor, lineNumber: number) {
+  const document = editor.document;
+  
+  if (lineNumber >= document.lineCount) {
+    return;
+  }
+
+  // Create a new selection at the specified line
+  const position = new vscode.Position(lineNumber, 0);
+  const range = new vscode.Range(position, position);
+  
+  editor.selection = new vscode.Selection(range.start, range.end);
+  editor.revealRange(range, vscode.TextEditorRevealType.InCenter);
+  
+  // Focus the editor
+  vscode.window.showTextDocument(document, editor.viewColumn);
+}
+
 function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext, markdownContent: string): string {
   const scriptUri = webview.asWebviewUri(
     vscode.Uri.joinPath(context.extensionUri, 'media', 'main.js')
@@ -190,138 +216,278 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
         body {
             font-family: var(--vscode-editor-font-family, 'Segoe UI', Arial, sans-serif);
             font-size: var(--vscode-editor-font-size, 14px);
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--vscode-editor-foreground);
             background-color: var(--vscode-editor-background);
-            padding: 20px;
+            padding: 0;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 20px 16px;
+                max-width: 100%;
+            }
         }
 
         .progress-container {
             background-color: var(--vscode-editorWidget-background);
             border: 1px solid var(--vscode-editorWidget-border);
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .progress-container:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .progress-header {
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
             color: var(--vscode-editorWidget-foreground);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .progress-bar-container {
             background-color: var(--vscode-editorWidget-resizeBorder);
-            border-radius: 10px;
-            height: 8px;
+            border-radius: 12px;
+            height: 10px;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            position: relative;
         }
 
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #28a745, #20c997);
-            border-radius: 10px;
-            transition: width 0.3s ease;
+            border-radius: 12px;
+            transition: width 0.5s ease;
             width: 0%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: progress-shine 2s infinite;
+        }
+
+        @keyframes progress-shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .progress-text {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--vscode-descriptionForeground);
+            text-align: center;
+        }
+
+        .content-container {
+            background-color: var(--vscode-editor-background);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--vscode-editorWidget-border, transparent);
         }
 
         .task-list-item {
             display: flex;
             align-items: flex-start;
-            margin: 8px 0;
+            margin: 12px 0;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            padding: 4px;
-            border-radius: 4px;
+            transition: all 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid transparent;
         }
 
         .task-list-item:hover {
             background-color: var(--vscode-list-hoverBackground);
+            border-color: var(--vscode-focusBorder);
+            transform: translateX(2px);
         }
 
         .md-checkbox {
-            margin-right: 12px;
-            margin-top: 2px;
+            margin-right: 16px;
+            margin-top: 3px;
             cursor: pointer;
-            transform: scale(1.2);
+            transform: scale(1.3);
+            transition: transform 0.1s ease;
         }
 
         .md-checkbox:hover {
             background-color: var(--vscode-inputOption-hoverBackground);
+            transform: scale(1.4);
+        }
+
+        .md-checkbox:active {
+            transform: scale(1.2);
         }
 
         .task-text {
             flex: 1;
             word-wrap: break-word;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .task-list-item input:checked + .task-text {
             text-decoration: line-through;
-            opacity: 0.7;
+            opacity: 0.65;
             color: var(--vscode-descriptionForeground);
         }
 
         ul, ol {
             padding-left: 0;
+            margin: 16px 0;
+        }
+
+        ul ul, ol ol {
+            margin: 8px 0;
+            padding-left: 24px;
         }
 
         .task-list-item-container {
             list-style: none;
-            margin: 4px 0;
+            margin: 6px 0;
         }
 
         h1, h2, h3, h4, h5, h6 {
             color: var(--vscode-editorLineNumber-activeForeground);
-            margin-top: 24px;
-            margin-bottom: 16px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .clickable-header:hover {
+            color: var(--vscode-textLink-foreground) !important;
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            border-bottom: 2px solid var(--vscode-editorWidget-border);
+            padding-bottom: 12px;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 1px solid var(--vscode-editorWidget-border);
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            margin-top: 32px;
+        }
+
+        p {
+            margin: 16px 0;
+            line-height: 1.7;
         }
 
         code {
             background-color: var(--vscode-textCodeBlock-background);
             color: var(--vscode-textPreformat-foreground);
-            padding: 2px 4px;
-            border-radius: 3px;
+            padding: 3px 6px;
+            border-radius: 4px;
             font-family: var(--vscode-editor-font-family);
+            font-size: 0.9em;
         }
 
         pre {
             background-color: var(--vscode-textCodeBlock-background);
-            padding: 12px;
-            border-radius: 6px;
+            padding: 16px;
+            border-radius: 8px;
             overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid var(--vscode-editorWidget-border);
         }
 
         blockquote {
             border-left: 4px solid var(--vscode-textBlockQuote-border);
-            padding-left: 16px;
-            margin: 16px 0;
+            padding-left: 20px;
+            margin: 20px 0;
             color: var(--vscode-textBlockQuote-foreground);
+            font-style: italic;
+            background-color: var(--vscode-textCodeBlock-background);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
         }
 
-        .content-container {
-            max-width: 800px;
+        /* Improved list spacing */
+        li {
+            margin: 8px 0;
+        }
+
+        /* Better spacing for nested lists */
+        .task-list-item-container .task-list-item-container {
+            margin-left: 20px;
+            border-left: 2px solid var(--vscode-editorWidget-border);
+            padding-left: 16px;
+            margin-top: 4px;
+        }
+
+        /* Focus styles for accessibility */
+        .md-checkbox:focus {
+            outline: 2px solid var(--vscode-focusBorder);
+            outline-offset: 2px;
+        }
+
+        /* Smooth transitions for better UX */
+        * {
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Section spacing */
+        .content-container > * + * {
+            margin-top: 24px;
         }
     </style>
 </head>
 <body>
-    <div class="progress-container">
-        <div class="progress-header">📊 Task Progress</div>
-        <div class="progress-bar-container">
-            <div id="progress-bar" class="progress-bar" style="width: ${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%"></div>
+    <div class="main-container">
+        <div class="progress-container">
+            <div class="progress-header">📊 Task Progress</div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar" style="width: ${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%"></div>
+            </div>
+            <div id="progress-text" class="progress-text">${stats.completed}/${stats.total} tasks completed (${stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0}%)</div>
         </div>
-        <div id="progress-text" class="progress-text">${stats.completed}/${stats.total} tasks completed (${stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0}%)</div>
-    </div>
-    
-    <div class="content-container">
-        <div id="root">${renderedContent}</div>
+        
+        <div class="content-container">
+            <div id="root">${renderedContent}</div>
+        </div>
     </div>
 
     <script src="${scriptUri}"></script>

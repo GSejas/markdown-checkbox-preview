@@ -7,8 +7,32 @@ export function renderMarkdown(text: string): string {
     typographer: true
   });
 
+  // Custom rule to add click handlers to headers
+  md.core.ruler.after('inline', 'clickable_headers', (state: any) => {
+    const tokens = state.tokens;
+    
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      
+      if (token.type === 'heading_open') {
+        const inlineToken = tokens[i + 1];
+        if (inlineToken && inlineToken.type === 'inline') {
+          const lineNumber = token.map ? token.map[0] : 0;
+          const headerId = `header-${lineNumber}`;
+          
+          // Add click handler and cursor style to the header
+          token.attrSet('id', headerId);
+          token.attrSet('data-line', lineNumber.toString());
+          token.attrSet('style', 'cursor: pointer; transition: color 0.2s ease;');
+          token.attrSet('class', 'clickable-header');
+          token.attrSet('title', 'Click to navigate to this section in the editor');
+        }
+      }
+    }
+  });
+
   // Custom rule to handle task list items
-  md.core.ruler.after('inline', 'task_list_items', (state: any) => {
+  md.core.ruler.after('clickable_headers', 'task_list_items', (state: any) => {
     const tokens = state.tokens;
     
     for (let i = 0; i < tokens.length; i++) {

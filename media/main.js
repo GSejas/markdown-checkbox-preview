@@ -18,9 +18,11 @@
     }
   });
 
-  // Handle checkbox clicks
+  // Handle checkbox clicks and header clicks
   document.body.addEventListener('click', event => {
     const target = event.target;
+    
+    // Handle checkbox clicks
     if (target.tagName === 'INPUT' && target.classList.contains('md-checkbox')) {
       const lineNumber = parseInt(target.dataset.line, 10);
       if (!isNaN(lineNumber)) {
@@ -35,6 +37,20 @@
         setTimeout(() => {
           target.disabled = false;
         }, 100);
+      }
+    }
+    
+    // Handle header clicks
+    if ((target.tagName === 'H1' || target.tagName === 'H2' || target.tagName === 'H3' || 
+         target.tagName === 'H4' || target.tagName === 'H5' || target.tagName === 'H6') && 
+        target.classList.contains('clickable-header')) {
+      const lineNumber = parseInt(target.dataset.line, 10);
+      if (!isNaN(lineNumber)) {
+        // Send navigate message to extension
+        vscode.postMessage({
+          type: 'navigate',
+          line: lineNumber
+        });
       }
     }
   });

@@ -67,9 +67,11 @@ More text
 			const checkboxCount = (html.match(/class="md-checkbox"/g) || []).length;
 			assert.strictEqual(checkboxCount, 3);
 			
-			// Should have headers
-			assert.ok(html.includes('<h1>'));
-			assert.ok(html.includes('<h2>'));
+			// Should have headers with clickable attributes
+			assert.ok(html.includes('<h1'));
+			assert.ok(html.includes('<h2'));
+			assert.ok(html.includes('class="clickable-header"'));
+			assert.ok(html.includes('data-line='));
 		});
 
 		test('should escape HTML in task text', () => {

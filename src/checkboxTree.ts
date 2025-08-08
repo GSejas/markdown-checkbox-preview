@@ -17,20 +17,39 @@ export class CheckboxTreeItem extends vscode.TreeItem {
     super(item.label, collapsibleState);
     
     this.tooltip = `Line ${item.line + 1}: ${item.label}`;
-    this.description = item.checked ? '✓' : '○';
-    this.contextValue = 'checkbox';
     
-    // Set icon based on checkbox state
-    this.iconPath = item.checked 
-      ? new vscode.ThemeIcon('check', new vscode.ThemeColor('charts.green'))
-      : new vscode.ThemeIcon('circle-outline', new vscode.ThemeColor('charts.gray'));
+    // Determine if this is a header (level < 6) or checkbox (level >= 6)
+    const isHeader = item.level < 6;
     
-    // Command to toggle checkbox when clicked
-    this.command = {
-      command: 'checkboxTree.toggle',
-      title: 'Toggle Checkbox',
-      arguments: [this.item]
-    };
+    if (isHeader) {
+      // Header item - clicking navigates to that line
+      this.description = `H${item.level}`;
+      this.contextValue = 'header';
+      this.iconPath = new vscode.ThemeIcon('symbol-file', new vscode.ThemeColor('symbolIcon.textForeground'));
+      
+      // Command to navigate to header line when clicked
+      this.command = {
+        command: 'checkboxTree.navigateToHeader',
+        title: 'Go to Header',
+        arguments: [this.item]
+      };
+    } else {
+      // Checkbox item - clicking toggles state
+      this.description = item.checked ? '✓' : '○';
+      this.contextValue = 'checkbox';
+      
+      // Set icon based on checkbox state
+      this.iconPath = item.checked 
+        ? new vscode.ThemeIcon('check', new vscode.ThemeColor('charts.green'))
+        : new vscode.ThemeIcon('circle-outline', new vscode.ThemeColor('charts.gray'));
+      
+      // Command to toggle checkbox when clicked
+      this.command = {
+        command: 'checkboxTree.toggle',
+        title: 'Toggle Checkbox',
+        arguments: [this.item]
+      };
+    }
   }
 }
 
@@ -190,6 +209,22 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
         editBuilder.replace(line.range, updatedText);
       });
     }
+  }
+
+  async navigateToHeader(item: CheckboxItem): Promise<void> {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (!activeEditor) {
+      return;
+    }
+
+    const position = new vscode.Position(item.line, 0);
+    const range = new vscode.Range(position, position);
+    
+    activeEditor.selection = new vscode.Selection(range.start, range.end);
+    activeEditor.revealRange(range, vscode.TextEditorRevealType.InCenter);
+    
+    // Focus the editor
+    await vscode.window.showTextDocument(activeEditor.document, activeEditor.viewColumn);
   }
 
   getCompletionStats(): { completed: number; total: number } {

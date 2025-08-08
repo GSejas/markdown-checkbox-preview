@@ -7,7 +7,7 @@
   - [x] Password reset
 - [x] Add routing
   - [ ] Setup React Router
-  - [x] Protected routes
+  - [ ] Protected routes
   - [x] Navigation components
 - [ ] Style with CSS modules
 - [ ] Write unit tests
@@ -15,23 +15,23 @@
 ### Backend Development  
 - [x] Set up Express server
 - [x] Create database models
-  - [ ] User model
-  - [ ] Task model
-  - [ ] Category model
+  - [x] User model 
+  - [x] Task model
+  - [x] Category model
 - [x] Implement REST API
-  - [ ] Authentication endpoints
+  - [x] Authentication endpoints
   - [ ] CRUD operations
-  - [ ] Error handling
-- [ ] Add authentication middleware
-- [ ] Write API documentation
-- [ ] Deploy to productionDemo
+  - [x] Error handling
+- [x] Add authentication middleware
+- [x] Write API documentation
+- [x] Deploy to productionDemo
 
 This extension allows you to interact with checkboxes in Markdown files and sync changes back to the source!
 
 ## Shopping List
 - [x] Buy groceries
   - [x] Fruits and vegetables
-  - [ ] Dairy products
+  - [x] Dairy products
   - [x] Bread and cereals
 - [x] Walk the dog  
 - [x] Finish project documentation
@@ -53,8 +53,8 @@ This extension allows you to interact with checkboxes in Markdown files and sync
 - [x] Create database models
 - [x] Implement REST API
 - [x] Add authentication middleware
-- [ ] Write API documentation
-- [ ] Deploy to production
+- [x] Write API documentation
+- [x] Deploy to production
 
 ## Features
 
@@ -72,7 +72,7 @@ This extension provides:
 Click any checkbox above and watch it update in both the preview and the source file!
 
 ### Testing Section
-- [ ] Test this checkbox
+- [x] Test this checkbox
 - [ ] And this one too
   - [ ] Nested checkbox 1
   - [ ] Nested checkbox 2

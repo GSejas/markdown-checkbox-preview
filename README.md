@@ -5,6 +5,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 ## Features
 
 - **Interactive checkboxes** that can be clicked to toggle state
+- **Clickable headers** for quick navigation to sections in source file
 - **Live sync** - Changes are immediately synced back to the source Markdown file  
 - **Progress tracking** with visual progress bar
 - **Hierarchical tree view** in the Explorer sidebar showing all checkboxes organized by headers
@@ -18,7 +19,8 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 1. Open a Markdown file containing checkboxes
 2. Use Command Palette: "Open Interactive Checkbox Preview"
 3. Click checkboxes in the preview to toggle them
-4. Changes are automatically saved to your file
+4. **Click any header to navigate to that section in the source file**
+5. Changes are automatically saved to your file
 
 ### Tree View Navigation
 1. Open a Markdown file with checkboxes
@@ -49,7 +51,13 @@ Install from the VS Code Extension Marketplace or use the .vsix file.
 
 VS Code 1.84.0 or higher
 
-## New Features in v0.0.1
+## New Features in v1.0.1
+
+- **🆕 Clickable Headers**: Click any header in the preview to jump to that section in the source editor
+- **🆕 Enhanced Navigation**: Seamless navigation between preview and source with visual feedback
+- **🆕 Improved User Experience**: Headers show hover effects and tooltips for better discoverability
+
+## New Features in v1.0.0
 
 - **🆕 Hierarchical Tree View**: Navigate all checkboxes in the Explorer sidebar
 - **🆕 Status Bar Integration**: See completion stats at a glance
@@ -58,6 +66,10 @@ VS Code 1.84.0 or higher
 
 ## Release Notes
 
-### 0.0.1
+### 1.0.1
+
+Added clickable header navigation for enhanced user experience.
+
+### 1.0.0
 
 Initial release with interactive checkbox functionality and hierarchical tree view.

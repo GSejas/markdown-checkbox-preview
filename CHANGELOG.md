@@ -4,6 +4,38 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.2] - 2025-08-08
+
+### ✨ **Added**
+- **Clickable Tree Navigation** 🚀
+  - Headers in the tree view are now clickable for quick navigation
+  - Clicking any header (H1-H6) in the Explorer sidebar jumps to that section in the source editor
+  - Visual distinction between headers (file icons, "H1"/"H2" descriptions) and checkboxes
+  - Seamless integration preserving existing checkbox toggle functionality
+
+### 🛠️ **Enhanced**
+- Tree view user experience with intuitive navigation
+- Header items display with file icons and level indicators
+- Improved discoverability of navigation features
+
+### 🎯 **Technical**
+- Added `checkboxTree.navigateToHeader` command
+- Enhanced `CheckboxTreeItem` to handle different item types
+- Minimal implementation maintaining backward compatibility
+
+## [1.0.1] - 2025-08-08
+
+### ✨ **Added**
+- **Clickable Headers in Preview** 🖱️
+  - Headers in the webview preview are now clickable
+  - Click any header to navigate to that section in the source editor
+  - Visual feedback with hover effects and tooltips
+
+### 🎨 **Enhanced**
+- Better centering and spacing in preview layout
+- Responsive design improvements
+- Enhanced typography and visual hierarchy
+
 ## [1.0.0] - 2025-08-08
 
 ### 🚀 **Major Release - Comprehensive Extension with Advanced Testing**
