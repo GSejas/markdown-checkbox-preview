@@ -1,0 +1,129 @@
+{
+  "name": "markdown-checkbox-preview",
+  "displayName": "Markdown Checkbox Preview",
+  "description": "Preview Markdown check-boxes that sync with the source",
+  "version": "1.0.0",
+  "publisher": "GSejas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gsejas/markdown-checkbox-preview.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gsejas/markdown-checkbox-preview/issues"
+  },
+  "homepage": "https://github.com/gsejas/markdown-checkbox-preview#readme",
+  "keywords": [
+    "markdown",
+    "preview",
+    "checkbox",
+    "live"
+  ],
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "checkboxPreview.open",
+        "title": "Open Interactive Checkbox Preview",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "checkboxTree.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "checkboxTree.toggle",
+        "title": "Toggle Checkbox",
+        "icon": "$(check)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "checkboxTree",
+          "name": "Markdown Checkboxes",
+          "when": "resourceExtname == .md"
+        }
+      ]
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "checkboxPreview.open",
+          "when": "resourceLangId == markdown",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "checkboxPreview.open",
+          "when": "resourceLangId == markdown"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "checkboxTree.refresh",
+          "when": "view == checkboxTree",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "checkboxTree.toggle",
+          "when": "view == checkboxTree && viewItem == checkbox"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:visual": "playwright test src/test/e2e/webview/",
+    "test:performance": "playwright test src/test/e2e/performance-accessibility.test.ts",
+    "test:all": "npm run test && npm run test:e2e",
+    "serve:test": "node -e \"require('http').createServer((req, res) => { res.writeHead(200, {'Content-Type': 'text/html'}); res.end('Test server running'); }).listen(3000, () => console.log('Test server on port 3000'));\""
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.84.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/markdown-it": "^13.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.32.0",
+    "esbuild": "^0.25.8",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.2",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "@playwright/test": "^1.40.0",
+    "playwright": "^1.40.0"
+  },
+  "dependencies": {
+    "markdown-it": "^14.0.0"
+  }
+}

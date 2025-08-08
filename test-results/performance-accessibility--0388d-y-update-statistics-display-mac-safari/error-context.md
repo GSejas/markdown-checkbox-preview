@@ -1,0 +1,406 @@
+# Page snapshot
+
+```yaml
+- text: "Progress: 0/0 completed (0%)"
+- heading "Medium Test Document" [level=1]
+- checkbox
+- text: Task 1
+- checkbox [checked]
+- text: Task 2
+- checkbox
+- text: Task 3
+- checkbox [checked]
+- text: Task 4
+- checkbox
+- text: Task 5
+- checkbox [checked]
+- text: Task 6
+- checkbox
+- text: Task 7
+- checkbox [checked]
+- text: Task 8
+- checkbox
+- text: Task 9
+- checkbox [checked]
+- text: Task 10
+- checkbox [checked]
+- text: Task 11
+- checkbox
+- text: Task 12
+- checkbox [checked]
+- text: Task 13
+- checkbox
+- text: Task 14
+- checkbox [checked]
+- text: Task 15
+- checkbox
+- text: Task 16
+- checkbox [checked]
+- text: Task 17
+- checkbox
+- text: Task 18
+- checkbox [checked]
+- text: Task 19
+- checkbox
+- text: Task 20
+- checkbox [checked]
+- text: Task 21
+- checkbox
+- text: Task 22
+- checkbox [checked]
+- text: Task 23
+- checkbox
+- text: Task 24
+- checkbox [checked]
+- text: Task 25
+- checkbox
+- text: Task 26
+- checkbox [checked]
+- text: Task 27
+- checkbox
+- text: Task 28
+- checkbox [checked]
+- text: Task 29
+- checkbox
+- text: Task 30
+- checkbox [checked]
+- text: Task 31
+- checkbox
+- text: Task 32
+- checkbox [checked]
+- text: Task 33
+- checkbox
+- text: Task 34
+- checkbox [checked]
+- text: Task 35
+- checkbox
+- text: Task 36
+- checkbox [checked]
+- text: Task 37
+- checkbox
+- text: Task 38
+- checkbox [checked]
+- text: Task 39
+- checkbox
+- text: Task 40
+- checkbox [checked]
+- text: Task 41
+- checkbox
+- text: Task 42
+- checkbox [checked]
+- text: Task 43
+- checkbox
+- text: Task 44
+- checkbox [checked]
+- text: Task 45
+- checkbox
+- text: Task 46
+- checkbox [checked]
+- text: Task 47
+- checkbox
+- text: Task 48
+- checkbox [checked]
+- text: Task 49
+- checkbox
+- text: Task 50
+- checkbox [checked]
+- text: Task 51
+- checkbox
+- text: Task 52
+- checkbox [checked]
+- text: Task 53
+- checkbox
+- text: Task 54
+- checkbox [checked]
+- text: Task 55
+- checkbox
+- text: Task 56
+- checkbox [checked]
+- text: Task 57
+- checkbox
+- text: Task 58
+- checkbox [checked]
+- text: Task 59
+- checkbox
+- text: Task 60
+- checkbox [checked]
+- text: Task 61
+- checkbox
+- text: Task 62
+- checkbox [checked]
+- text: Task 63
+- checkbox
+- text: Task 64
+- checkbox [checked]
+- text: Task 65
+- checkbox
+- text: Task 66
+- checkbox [checked]
+- text: Task 67
+- checkbox
+- text: Task 68
+- checkbox [checked]
+- text: Task 69
+- checkbox
+- text: Task 70
+- checkbox [checked]
+- text: Task 71
+- checkbox
+- text: Task 72
+- checkbox [checked]
+- text: Task 73
+- checkbox
+- text: Task 74
+- checkbox [checked]
+- text: Task 75
+- checkbox
+- text: Task 76
+- checkbox [checked]
+- text: Task 77
+- checkbox
+- text: Task 78
+- checkbox [checked]
+- text: Task 79
+- checkbox
+- text: Task 80
+- checkbox [checked]
+- text: Task 81
+- checkbox
+- text: Task 82
+- checkbox [checked]
+- text: Task 83
+- checkbox
+- text: Task 84
+- checkbox [checked]
+- text: Task 85
+- checkbox
+- text: Task 86
+- checkbox [checked]
+- text: Task 87
+- checkbox
+- text: Task 88
+- checkbox [checked]
+- text: Task 89
+- checkbox
+- text: Task 90
+- checkbox [checked]
+- text: Task 91
+- checkbox
+- text: Task 92
+- checkbox [checked]
+- text: Task 93
+- checkbox
+- text: Task 94
+- checkbox [checked]
+- text: Task 95
+- checkbox
+- text: Task 96
+- checkbox [checked]
+- text: Task 97
+- checkbox
+- text: Task 98
+- checkbox [checked]
+- text: Task 99
+- checkbox
+- text: Task 100
+- checkbox [checked]
+- text: Task 101
+- checkbox
+- text: Task 102
+- checkbox [checked]
+- text: Task 103
+- checkbox
+- text: Task 104
+- checkbox [checked]
+- text: Task 105
+- checkbox
+- text: Task 106
+- checkbox [checked]
+- text: Task 107
+- checkbox
+- text: Task 108
+- checkbox [checked]
+- text: Task 109
+- checkbox
+- text: Task 110
+- checkbox [checked]
+- text: Task 111
+- checkbox
+- text: Task 112
+- checkbox [checked]
+- text: Task 113
+- checkbox
+- text: Task 114
+- checkbox [checked]
+- text: Task 115
+- checkbox
+- text: Task 116
+- checkbox [checked]
+- text: Task 117
+- checkbox
+- text: Task 118
+- checkbox [checked]
+- text: Task 119
+- checkbox
+- text: Task 120
+- checkbox [checked]
+- text: Task 121
+- checkbox
+- text: Task 122
+- checkbox [checked]
+- text: Task 123
+- checkbox
+- text: Task 124
+- checkbox [checked]
+- text: Task 125
+- checkbox
+- text: Task 126
+- checkbox [checked]
+- text: Task 127
+- checkbox
+- text: Task 128
+- checkbox [checked]
+- text: Task 129
+- checkbox
+- text: Task 130
+- checkbox [checked]
+- text: Task 131
+- checkbox
+- text: Task 132
+- checkbox [checked]
+- text: Task 133
+- checkbox
+- text: Task 134
+- checkbox [checked]
+- text: Task 135
+- checkbox
+- text: Task 136
+- checkbox [checked]
+- text: Task 137
+- checkbox
+- text: Task 138
+- checkbox [checked]
+- text: Task 139
+- checkbox
+- text: Task 140
+- checkbox [checked]
+- text: Task 141
+- checkbox
+- text: Task 142
+- checkbox [checked]
+- text: Task 143
+- checkbox
+- text: Task 144
+- checkbox [checked]
+- text: Task 145
+- checkbox
+- text: Task 146
+- checkbox [checked]
+- text: Task 147
+- checkbox
+- text: Task 148
+- checkbox [checked]
+- text: Task 149
+- checkbox
+- text: Task 150
+- checkbox [checked]
+- text: Task 151
+- checkbox
+- text: Task 152
+- checkbox [checked]
+- text: Task 153
+- checkbox
+- text: Task 154
+- checkbox [checked]
+- text: Task 155
+- checkbox
+- text: Task 156
+- checkbox [checked]
+- text: Task 157
+- checkbox
+- text: Task 158
+- checkbox [checked]
+- text: Task 159
+- checkbox
+- text: Task 160
+- checkbox [checked]
+- text: Task 161
+- checkbox
+- text: Task 162
+- checkbox [checked]
+- text: Task 163
+- checkbox
+- text: Task 164
+- checkbox [checked]
+- text: Task 165
+- checkbox
+- text: Task 166
+- checkbox [checked]
+- text: Task 167
+- checkbox
+- text: Task 168
+- checkbox [checked]
+- text: Task 169
+- checkbox
+- text: Task 170
+- checkbox [checked]
+- text: Task 171
+- checkbox
+- text: Task 172
+- checkbox [checked]
+- text: Task 173
+- checkbox
+- text: Task 174
+- checkbox [checked]
+- text: Task 175
+- checkbox
+- text: Task 176
+- checkbox [checked]
+- text: Task 177
+- checkbox
+- text: Task 178
+- checkbox [checked]
+- text: Task 179
+- checkbox
+- text: Task 180
+- checkbox [checked]
+- text: Task 181
+- checkbox
+- text: Task 182
+- checkbox [checked]
+- text: Task 183
+- checkbox
+- text: Task 184
+- checkbox [checked]
+- text: Task 185
+- checkbox
+- text: Task 186
+- checkbox [checked]
+- text: Task 187
+- checkbox
+- text: Task 188
+- checkbox [checked]
+- text: Task 189
+- checkbox
+- text: Task 190
+- checkbox [checked]
+- text: Task 191
+- checkbox
+- text: Task 192
+- checkbox [checked]
+- text: Task 193
+- checkbox
+- text: Task 194
+- checkbox [checked]
+- text: Task 195
+- checkbox
+- text: Task 196
+- checkbox [checked]
+- text: Task 197
+- checkbox
+- text: Task 198
+- checkbox [checked]
+- text: Task 199
+- checkbox
+- text: Task 200
+```

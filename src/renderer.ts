@@ -1,0 +1,71 @@
+import MarkdownIt from 'markdown-it';
+
+export function renderMarkdown(text: string): string {
+  const md = new MarkdownIt({ 
+    html: false,
+    linkify: true,
+    typographer: true
+  });
+
+  // Custom rule to handle task list items
+  md.core.ruler.after('inline', 'task_list_items', (state: any) => {
+    const tokens = state.tokens;
+    
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      
+      // Look for list items that contain checkboxes
+      if (token.type === 'list_item_open') {
+        const nextToken = tokens[i + 1];
+        if (nextToken && nextToken.type === 'paragraph_open') {
+          const inlineToken = tokens[i + 2];
+          if (inlineToken && inlineToken.type === 'inline') {
+            const content = inlineToken.content.trim();
+            const checkboxMatch = content.match(/^\[([x\s])\]\s*(.*)/i);
+            
+            if (checkboxMatch) {
+              const isChecked = checkboxMatch[1].toLowerCase() === 'x';
+              const taskText = checkboxMatch[2];
+              const lineNumber = inlineToken.map ? inlineToken.map[0] : 0;
+              
+              // Replace the inline content with our custom checkbox HTML
+              inlineToken.type = 'html_inline';
+              inlineToken.content = `
+                <label class="task-list-item">
+                  <input type="checkbox" 
+                         class="md-checkbox" 
+                         data-line="${lineNumber}" 
+                         ${isChecked ? 'checked' : ''}>
+                  <span class="task-text">${md.utils.escapeHtml(taskText)}</span>
+                </label>
+              `;
+              
+              // Mark the list item as a task list item
+              token.attrSet('class', 'task-list-item-container');
+            }
+          }
+        }
+      }
+    }
+  });
+
+  return md.render(text);
+}
+
+export function getTaskListCount(text: string): { total: number; completed: number } {
+  const lines = text.split('\n');
+  let total = 0;
+  let completed = 0;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.match(/^[-*+]\s*\[[\sx]\]/i)) {
+      total++;
+      if (trimmed.match(/^[-*+]\s*\[x\]/i)) {
+        completed++;
+      }
+    }
+  }
+  
+  return { total, completed };
+}

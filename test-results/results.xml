@@ -1,0 +1,1478 @@
+<testsuites id="" name="" tests="49" failures="40" skipped="0" errors="0" time="30.267405">
+<testsuite name="webview\webview-visual.test.ts" timestamp="2025-08-08T09:16:41.613Z" hostname="vscode-webview" tests="9" failures="9" skipped="0" time="11.347" errors="0">
+<testcase name="Webview Visual Tests › should render simple checkbox list correctly" classname="webview\webview-visual.test.ts" time="1.287">
+<failure message="webview-visual.test.ts:122:7 should render simple checkbox list correctly" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:122:7 › Webview Visual Tests › should render simple checkbox list correctly 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:124:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-ed521-ple-checkbox-list-correctly-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-ed521-ple-checkbox-list-correctly-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should render hierarchical structure with proper nesting" classname="webview\webview-visual.test.ts" time="1.339">
+<failure message="webview-visual.test.ts:142:7 should render hierarchical structure with proper nesting" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:142:7 › Webview Visual Tests › should render hierarchical structure with proper nesting 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:143:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-1bddb-ructure-with-proper-nesting-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-1bddb-ructure-with-proper-nesting-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle checkbox interactions" classname="webview\webview-visual.test.ts" time="1.338">
+<failure message="webview-visual.test.ts:156:7 should handle checkbox interactions" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:156:7 › Webview Visual Tests › should handle checkbox interactions 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:157:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-5c04e-andle-checkbox-interactions-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-5c04e-andle-checkbox-interactions-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should display task completion statistics" classname="webview\webview-visual.test.ts" time="1.342">
+<failure message="webview-visual.test.ts:176:7 should display task completion statistics" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:176:7 › Webview Visual Tests › should display task completion statistics 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:177:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-aa499--task-completion-statistics-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-aa499--task-completion-statistics-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle malformed markdown gracefully" classname="webview\webview-visual.test.ts" time="1.293">
+<failure message="webview-visual.test.ts:191:7 should handle malformed markdown gracefully" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:191:7 › Webview Visual Tests › should handle malformed markdown gracefully 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:192:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-543e1-lformed-markdown-gracefully-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-543e1-lformed-markdown-gracefully-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle large documents efficiently" classname="webview\webview-visual.test.ts" time="1.338">
+<failure message="webview-visual.test.ts:206:7 should handle large documents efficiently" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:206:7 › Webview Visual Tests › should handle large documents efficiently 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:207:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-0871d-large-documents-efficiently-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-0871d-large-documents-efficiently-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should support dark theme" classname="webview\webview-visual.test.ts" time="1.284">
+<failure message="webview-visual.test.ts:229:7 should support dark theme" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:229:7 › Webview Visual Tests › should support dark theme 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:230:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-90112-s-should-support-dark-theme-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-90112-s-should-support-dark-theme-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should be responsive on different screen sizes" classname="webview\webview-visual.test.ts" time="1.341">
+<failure message="webview-visual.test.ts:239:7 should be responsive on different screen sizes" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:239:7 › Webview Visual Tests › should be responsive on different screen sizes 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:240:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-222ef-e-on-different-screen-sizes-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-222ef-e-on-different-screen-sizes-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should record user interaction video" classname="webview\webview-visual.test.ts" time="0.785">
+<failure message="webview-visual.test.ts:257:7 should record user interaction video" type="FAILURE">
+<![CDATA[  [vscode-webview] › webview\webview-visual.test.ts:257:7 › Webview Visual Tests › should record user interaction video 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:258:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-visual-Webview-Vis-d0264-cord-user-interaction-video-vscode-webview\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-visual-Webview-Vis-d0264-cord-user-interaction-video-vscode-webview\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="performance-accessibility.test.ts" timestamp="2025-08-08T09:16:41.613Z" hostname="windows-edge" tests="11" failures="6" skipped="0" time="14.947" errors="0">
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should render large documents within performance budget" classname="performance-accessibility.test.ts" time="1.308">
+<failure message="performance-accessibility.test.ts:17:9 should render large documents within performance budget" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:17:9 › Performance & Accessibility Tests › Performance Benchmarks › should render large documents within performance budget 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   130
+
+      35 |       
+      36 |       // Interaction should be fast (under 100ms)
+    > 37 |       expect(interactionTime).toBeLessThan(100);
+         |                               ^
+      38 |       
+      39 |       // Check memory usage (simplified)
+      40 |       const metrics = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:37:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--7c117-s-within-performance-budget-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--7c117-s-within-performance-budget-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|performance-accessibility--7c117-s-within-performance-budget-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--7c117-s-within-performance-budget-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should handle rapid checkbox toggles without performance degradation" classname="performance-accessibility.test.ts" time="1.921">
+<failure message="performance-accessibility.test.ts:51:9 should handle rapid checkbox toggles without performance degradation" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:51:9 › Performance & Accessibility Tests › Performance Benchmarks › should handle rapid checkbox toggles without performance degradation 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 50
+    Received:   52.85
+
+      69 |       // Average toggle time should remain low
+      70 |       const avgToggleTime = toggleTimes.reduce((a, b) => a + b, 0) / toggleTimes.length;
+    > 71 |       expect(avgToggleTime).toBeLessThan(50);
+         |                             ^
+      72 |       
+      73 |       // No significant performance degradation over time
+      74 |       const firstHalf = toggleTimes.slice(0, 10).reduce((a, b) => a + b, 0) / 10;
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:71:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--ef55d-out-performance-degradation-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--ef55d-out-performance-degradation-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|performance-accessibility--ef55d-out-performance-degradation-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--ef55d-out-performance-degradation-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should efficiently update statistics display" classname="performance-accessibility.test.ts" time="1.55">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should handle scroll performance with large content" classname="performance-accessibility.test.ts" time="2.331">
+<failure message="performance-accessibility.test.ts:107:9 should handle scroll performance with large content" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:107:9 › Performance & Accessibility Tests › Performance Benchmarks › should handle scroll performance with large content 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\after-scroll-performance-windows-edge-win32.png, writing actual.
+
+      128 |       
+      129 |       // Take screenshot to verify no visual issues
+    > 130 |       await expect(page).toHaveScreenshot('after-scroll-performance.png');
+          |       ^
+      131 |     });
+      132 |   });
+      133 |
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:130:7
+
+    attachment #1: after-scroll-performance (image/png) ────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\after-scroll-performance-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-windows-edge\after-scroll-performance-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\after-scroll-performance-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-windows-edge\after-scroll-performance-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have proper ARIA labels and roles" classname="performance-accessibility.test.ts" time="0.902">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should support keyboard navigation" classname="performance-accessibility.test.ts" time="1.534">
+<failure message="performance-accessibility.test.ts:174:9 should support keyboard navigation" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:174:9 › Performance & Accessibility Tests › Accessibility Tests › should support keyboard navigation 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\keyboard-navigation-windows-edge-win32.png, writing actual.
+
+      198 |       // Verify interaction worked
+      199 |       await page.waitForTimeout(100);
+    > 200 |       await expect(page).toHaveScreenshot('keyboard-navigation.png');
+          |       ^
+      201 |     });
+      202 |
+      203 |     test('should work with screen readers', async () => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:200:7
+
+    attachment #1: keyboard-navigation (image/png) ─────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\keyboard-navigation-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\keyboard-navigation-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\keyboard-navigation-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\keyboard-navigation-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should work with screen readers" classname="performance-accessibility.test.ts" time="0.899">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have sufficient color contrast" classname="performance-accessibility.test.ts" time="1.943">
+<failure message="performance-accessibility.test.ts:227:9 should have sufficient color contrast" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:227:9 › Performance & Accessibility Tests › Accessibility Tests › should have sufficient color contrast 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-light-theme-windows-edge-win32.png, writing actual.
+
+      239 |         
+      240 |         // Take screenshot for manual contrast analysis
+    > 241 |         await expect(page).toHaveScreenshot(`contrast-${theme}-theme.png`);
+          |         ^
+      242 |         
+      243 |         // Basic color validation
+      244 |         const styles = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:241:9
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-dark-theme-windows-edge-win32.png, writing actual.
+
+      239 |         
+      240 |         // Take screenshot for manual contrast analysis
+    > 241 |         await expect(page).toHaveScreenshot(`contrast-${theme}-theme.png`);
+          |         ^
+      242 |         
+      243 |         // Basic color validation
+      244 |         const styles = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:241:9
+
+    attachment #1: contrast-light-theme (image/png) ────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\contrast-light-theme-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\contrast-light-theme-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: contrast-dark-theme (image/png) ─────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\contrast-dark-theme-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\contrast-dark-theme-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-light-theme-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\contrast-light-theme-actual.png]]
+
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-dark-theme-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\contrast-dark-theme-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should support high contrast mode" classname="performance-accessibility.test.ts" time="1.643">
+<failure message="performance-accessibility.test.ts:258:9 should support high contrast mode" type="FAILURE">
+<![CDATA[  [windows-edge] › performance-accessibility.test.ts:258:9 › Performance & Accessibility Tests › Accessibility Tests › should support high contrast mode 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-mode-windows-edge-win32.png, writing actual.
+
+      269 |       
+      270 |       // Take screenshot to verify high contrast appearance
+    > 271 |       await expect(page).toHaveScreenshot('high-contrast-mode.png');
+          |       ^
+      272 |       
+      273 |       // Verify elements are still visible and interactive
+      274 |       await page.locator('.md-checkbox').first().click();
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:271:7
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-after-click-windows-edge-win32.png, writing actual.
+
+      273 |       // Verify elements are still visible and interactive
+      274 |       await page.locator('.md-checkbox').first().click();
+    > 275 |       await expect(page).toHaveScreenshot('high-contrast-after-click.png');
+          |       ^
+      276 |     });
+      277 |
+      278 |     test('should have proper heading structure', async () => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:275:7
+
+    attachment #1: high-contrast-mode (image/png) ──────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\high-contrast-mode-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-windows-edge\high-contrast-mode-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: high-contrast-after-click (image/png) ───────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\high-contrast-after-click-windows-edge-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-windows-edge\high-contrast-after-click-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-windows-edge\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-mode-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-windows-edge\high-contrast-mode-actual.png]]
+
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-after-click-windows-edge-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-windows-edge\high-contrast-after-click-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-windows-edge\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-windows-edge\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have proper heading structure" classname="performance-accessibility.test.ts" time="0.398">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should provide skip links for long content" classname="performance-accessibility.test.ts" time="0.518">
+</testcase>
+</testsuite>
+<testsuite name="webview\webview-visual.test.ts" timestamp="2025-08-08T09:16:41.613Z" hostname="windows-edge" tests="9" failures="9" skipped="0" time="4.292" errors="0">
+<testcase name="Webview Visual Tests › should render simple checkbox list correctly" classname="webview\webview-visual.test.ts" time="0.306">
+<failure message="webview-visual.test.ts:122:7 should render simple checkbox list correctly" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:122:7 › Webview Visual Tests › should render simple checkbox list correctly 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:124:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-e9521-ple-checkbox-list-correctly-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-e9521-ple-checkbox-list-correctly-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should render hierarchical structure with proper nesting" classname="webview\webview-visual.test.ts" time="0.346">
+<failure message="webview-visual.test.ts:142:7 should render hierarchical structure with proper nesting" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:142:7 › Webview Visual Tests › should render hierarchical structure with proper nesting 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:143:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-4499f-ructure-with-proper-nesting-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-4499f-ructure-with-proper-nesting-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle checkbox interactions" classname="webview\webview-visual.test.ts" time="0.514">
+<failure message="webview-visual.test.ts:156:7 should handle checkbox interactions" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:156:7 › Webview Visual Tests › should handle checkbox interactions 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:157:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-89133-andle-checkbox-interactions-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-89133-andle-checkbox-interactions-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should display task completion statistics" classname="webview\webview-visual.test.ts" time="0.548">
+<failure message="webview-visual.test.ts:176:7 should display task completion statistics" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:176:7 › Webview Visual Tests › should display task completion statistics 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:177:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-7883e--task-completion-statistics-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-7883e--task-completion-statistics-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle malformed markdown gracefully" classname="webview\webview-visual.test.ts" time="0.533">
+<failure message="webview-visual.test.ts:191:7 should handle malformed markdown gracefully" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:191:7 › Webview Visual Tests › should handle malformed markdown gracefully 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:192:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-7cded-lformed-markdown-gracefully-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-7cded-lformed-markdown-gracefully-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle large documents efficiently" classname="webview\webview-visual.test.ts" time="0.587">
+<failure message="webview-visual.test.ts:206:7 should handle large documents efficiently" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:206:7 › Webview Visual Tests › should handle large documents efficiently 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:207:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-30a40-large-documents-efficiently-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-30a40-large-documents-efficiently-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should support dark theme" classname="webview\webview-visual.test.ts" time="0.548">
+<failure message="webview-visual.test.ts:229:7 should support dark theme" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:229:7 › Webview Visual Tests › should support dark theme 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:230:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-cfd11-s-should-support-dark-theme-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-cfd11-s-should-support-dark-theme-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should be responsive on different screen sizes" classname="webview\webview-visual.test.ts" time="0.515">
+<failure message="webview-visual.test.ts:239:7 should be responsive on different screen sizes" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:239:7 › Webview Visual Tests › should be responsive on different screen sizes 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:240:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-9993e-e-on-different-screen-sizes-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-9993e-e-on-different-screen-sizes-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should record user interaction video" classname="webview\webview-visual.test.ts" time="0.395">
+<failure message="webview-visual.test.ts:257:7 should record user interaction video" type="FAILURE">
+<![CDATA[  [windows-edge] › webview\webview-visual.test.ts:257:7 › Webview Visual Tests › should record user interaction video 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:258:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-2ebcb-cord-user-interaction-video-windows-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-2ebcb-cord-user-interaction-video-windows-edge\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="performance-accessibility.test.ts" timestamp="2025-08-08T09:16:41.613Z" hostname="mac-safari" tests="11" failures="7" skipped="0" time="41.957" errors="0">
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should render large documents within performance budget" classname="performance-accessibility.test.ts" time="3.556">
+<failure message="performance-accessibility.test.ts:17:9 should render large documents within performance budget" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:17:9 › Performance & Accessibility Tests › Performance Benchmarks › should render large documents within performance budget 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   225
+
+      35 |       
+      36 |       // Interaction should be fast (under 100ms)
+    > 37 |       expect(interactionTime).toBeLessThan(100);
+         |                               ^
+      38 |       
+      39 |       // Check memory usage (simplified)
+      40 |       const metrics = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:37:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--7c117-s-within-performance-budget-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--7c117-s-within-performance-budget-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|performance-accessibility--7c117-s-within-performance-budget-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--7c117-s-within-performance-budget-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should handle rapid checkbox toggles without performance degradation" classname="performance-accessibility.test.ts" time="8.01">
+<failure message="performance-accessibility.test.ts:51:9 should handle rapid checkbox toggles without performance degradation" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:51:9 › Performance & Accessibility Tests › Performance Benchmarks › should handle rapid checkbox toggles without performance degradation 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 50
+    Received:   248.35
+
+      69 |       // Average toggle time should remain low
+      70 |       const avgToggleTime = toggleTimes.reduce((a, b) => a + b, 0) / toggleTimes.length;
+    > 71 |       expect(avgToggleTime).toBeLessThan(50);
+         |                             ^
+      72 |       
+      73 |       // No significant performance degradation over time
+      74 |       const firstHalf = toggleTimes.slice(0, 10).reduce((a, b) => a + b, 0) / 10;
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:71:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--ef55d-out-performance-degradation-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--ef55d-out-performance-degradation-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|performance-accessibility--ef55d-out-performance-degradation-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--ef55d-out-performance-degradation-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should efficiently update statistics display" classname="performance-accessibility.test.ts" time="5.783">
+<failure message="performance-accessibility.test.ts:79:9 should efficiently update statistics display" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:79:9 › Performance & Accessibility Tests › Performance Benchmarks › should efficiently update statistics display 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   279.4
+
+      102 |       
+      103 |       const avgUpdateTime = updateTimes.reduce((a, b) => a + b, 0) / updateTimes.length;
+    > 104 |       expect(avgUpdateTime).toBeLessThan(100); // Stats update under 100ms
+          |                             ^
+      105 |     });
+      106 |
+      107 |     test('should handle scroll performance with large content', async () => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:104:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--0388d-y-update-statistics-display-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--0388d-y-update-statistics-display-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|performance-accessibility--0388d-y-update-statistics-display-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--0388d-y-update-statistics-display-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Performance Benchmarks › should handle scroll performance with large content" classname="performance-accessibility.test.ts" time="5.326">
+<failure message="performance-accessibility.test.ts:107:9 should handle scroll performance with large content" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:107:9 › Performance & Accessibility Tests › Performance Benchmarks › should handle scroll performance with large content 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\after-scroll-performance-mac-safari-win32.png, writing actual.
+
+      128 |       
+      129 |       // Take screenshot to verify no visual issues
+    > 130 |       await expect(page).toHaveScreenshot('after-scroll-performance.png');
+          |       ^
+      131 |     });
+      132 |   });
+      133 |
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:130:7
+
+    attachment #1: after-scroll-performance (image/png) ────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\after-scroll-performance-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-mac-safari\after-scroll-performance-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--c9b3a-formance-with-large-content-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\after-scroll-performance-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-mac-safari\after-scroll-performance-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--c9b3a-formance-with-large-content-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have proper ARIA labels and roles" classname="performance-accessibility.test.ts" time="2.974">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should support keyboard navigation" classname="performance-accessibility.test.ts" time="3.888">
+<failure message="performance-accessibility.test.ts:174:9 should support keyboard navigation" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:174:9 › Performance & Accessibility Tests › Accessibility Tests › should support keyboard navigation 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\keyboard-navigation-mac-safari-win32.png, writing actual.
+
+      198 |       // Verify interaction worked
+      199 |       await page.waitForTimeout(100);
+    > 200 |       await expect(page).toHaveScreenshot('keyboard-navigation.png');
+          |       ^
+      201 |     });
+      202 |
+      203 |     test('should work with screen readers', async () => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:200:7
+
+    attachment #1: keyboard-navigation (image/png) ─────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\keyboard-navigation-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\keyboard-navigation-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\keyboard-navigation-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\keyboard-navigation-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--1b74d-support-keyboard-navigation-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should work with screen readers" classname="performance-accessibility.test.ts" time="2.978">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have sufficient color contrast" classname="performance-accessibility.test.ts" time="4.338">
+<failure message="performance-accessibility.test.ts:227:9 should have sufficient color contrast" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:227:9 › Performance & Accessibility Tests › Accessibility Tests › should have sufficient color contrast 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-light-theme-mac-safari-win32.png, writing actual.
+
+      239 |         
+      240 |         // Take screenshot for manual contrast analysis
+    > 241 |         await expect(page).toHaveScreenshot(`contrast-${theme}-theme.png`);
+          |         ^
+      242 |         
+      243 |         // Basic color validation
+      244 |         const styles = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:241:9
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-dark-theme-mac-safari-win32.png, writing actual.
+
+      239 |         
+      240 |         // Take screenshot for manual contrast analysis
+    > 241 |         await expect(page).toHaveScreenshot(`contrast-${theme}-theme.png`);
+          |         ^
+      242 |         
+      243 |         // Basic color validation
+      244 |         const styles = await page.evaluate(() => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:241:9
+
+    attachment #1: contrast-light-theme (image/png) ────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\contrast-light-theme-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\contrast-light-theme-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: contrast-dark-theme (image/png) ─────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\contrast-dark-theme-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\contrast-dark-theme-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-light-theme-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\contrast-light-theme-actual.png]]
+
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\contrast-dark-theme-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\contrast-dark-theme-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--493ff-e-sufficient-color-contrast-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should support high contrast mode" classname="performance-accessibility.test.ts" time="2.68">
+<failure message="performance-accessibility.test.ts:258:9 should support high contrast mode" type="FAILURE">
+<![CDATA[  [mac-safari] › performance-accessibility.test.ts:258:9 › Performance & Accessibility Tests › Accessibility Tests › should support high contrast mode 
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-mode-mac-safari-win32.png, writing actual.
+
+      269 |       
+      270 |       // Take screenshot to verify high contrast appearance
+    > 271 |       await expect(page).toHaveScreenshot('high-contrast-mode.png');
+          |       ^
+      272 |       
+      273 |       // Verify elements are still visible and interactive
+      274 |       await page.locator('.md-checkbox').first().click();
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:271:7
+
+    Error: A snapshot doesn't exist at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-after-click-mac-safari-win32.png, writing actual.
+
+      273 |       // Verify elements are still visible and interactive
+      274 |       await page.locator('.md-checkbox').first().click();
+    > 275 |       await expect(page).toHaveScreenshot('high-contrast-after-click.png');
+          |       ^
+      276 |     });
+      277 |
+      278 |     test('should have proper heading structure', async () => {
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\performance-accessibility.test.ts:275:7
+
+    attachment #1: high-contrast-mode (image/png) ──────────────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\high-contrast-mode-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-mac-safari\high-contrast-mode-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: high-contrast-after-click (image/png) ───────────────────────────────────────────
+    Expected: performance-accessibility.test.ts-snapshots\high-contrast-after-click-mac-safari-win32.png
+    Received: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-mac-safari\high-contrast-after-click-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\test-results\performance-accessibility--3760a--support-high-contrast-mode-mac-safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-mode-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-mac-safari\high-contrast-mode-actual.png]]
+
+[[ATTACHMENT|..\src\test\e2e\performance-accessibility.test.ts-snapshots\high-contrast-after-click-mac-safari-win32.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-mac-safari\high-contrast-after-click-actual.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-mac-safari\test-failed-1.png]]
+
+[[ATTACHMENT|performance-accessibility--3760a--support-high-contrast-mode-mac-safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should have proper heading structure" classname="performance-accessibility.test.ts" time="1.282">
+</testcase>
+<testcase name="Performance &amp; Accessibility Tests › Accessibility Tests › should provide skip links for long content" classname="performance-accessibility.test.ts" time="1.142">
+</testcase>
+</testsuite>
+<testsuite name="webview\webview-visual.test.ts" timestamp="2025-08-08T09:16:41.613Z" hostname="mac-safari" tests="9" failures="9" skipped="0" time="10.032" errors="0">
+<testcase name="Webview Visual Tests › should render simple checkbox list correctly" classname="webview\webview-visual.test.ts" time="1.148">
+<failure message="webview-visual.test.ts:122:7 should render simple checkbox list correctly" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:122:7 › Webview Visual Tests › should render simple checkbox list correctly 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:124:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-e9521-ple-checkbox-list-correctly-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-e9521-ple-checkbox-list-correctly-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should render hierarchical structure with proper nesting" classname="webview\webview-visual.test.ts" time="0.971">
+<failure message="webview-visual.test.ts:142:7 should render hierarchical structure with proper nesting" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:142:7 › Webview Visual Tests › should render hierarchical structure with proper nesting 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:143:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-4499f-ructure-with-proper-nesting-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-4499f-ructure-with-proper-nesting-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle checkbox interactions" classname="webview\webview-visual.test.ts" time="1.12">
+<failure message="webview-visual.test.ts:156:7 should handle checkbox interactions" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:156:7 › Webview Visual Tests › should handle checkbox interactions 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:157:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-89133-andle-checkbox-interactions-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-89133-andle-checkbox-interactions-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should display task completion statistics" classname="webview\webview-visual.test.ts" time="1.325">
+<failure message="webview-visual.test.ts:176:7 should display task completion statistics" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:176:7 › Webview Visual Tests › should display task completion statistics 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:177:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-7883e--task-completion-statistics-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-7883e--task-completion-statistics-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle malformed markdown gracefully" classname="webview\webview-visual.test.ts" time="1.378">
+<failure message="webview-visual.test.ts:191:7 should handle malformed markdown gracefully" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:191:7 › Webview Visual Tests › should handle malformed markdown gracefully 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:192:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-7cded-lformed-markdown-gracefully-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-7cded-lformed-markdown-gracefully-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should handle large documents efficiently" classname="webview\webview-visual.test.ts" time="1.119">
+<failure message="webview-visual.test.ts:206:7 should handle large documents efficiently" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:206:7 › Webview Visual Tests › should handle large documents efficiently 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:207:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-30a40-large-documents-efficiently-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-30a40-large-documents-efficiently-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should support dark theme" classname="webview\webview-visual.test.ts" time="1.069">
+<failure message="webview-visual.test.ts:229:7 should support dark theme" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:229:7 › Webview Visual Tests › should support dark theme 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:230:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-cfd11-s-should-support-dark-theme-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-cfd11-s-should-support-dark-theme-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should be responsive on different screen sizes" classname="webview\webview-visual.test.ts" time="1.054">
+<failure message="webview-visual.test.ts:239:7 should be responsive on different screen sizes" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:239:7 › Webview Visual Tests › should be responsive on different screen sizes 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:240:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-9993e-e-on-different-screen-sizes-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-9993e-e-on-different-screen-sizes-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Webview Visual Tests › should record user interaction video" classname="webview\webview-visual.test.ts" time="0.848">
+<failure message="webview-visual.test.ts:257:7 should record user interaction video" type="FAILURE">
+<![CDATA[  [mac-safari] › webview\webview-visual.test.ts:257:7 › Webview Visual Tests › should record user interaction video 
+
+    Error: Cannot find module '../../renderer'
+    Require stack:
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\transform\transform.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\configLoader.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\worker\workerMain.js
+    - C:\Users\delir\Documents\repos\markdown-checkbox-preview\node_modules\playwright\lib\common\process.js
+
+      289 | function generateWebviewHTML(markdownContent: string, darkTheme: boolean = false): string {
+      290 |   // This would use our actual renderer
+    > 291 |   const { renderMarkdown, getTaskListCount } = require('../../renderer');
+          |                                                ^
+      292 |   
+      293 |   const renderedHTML = renderMarkdown(markdownContent);
+      294 |   const stats = getTaskListCount(markdownContent);
+        at generateWebviewHTML (C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:291:48)
+        at C:\Users\delir\Documents\repos\markdown-checkbox-preview\src\test\e2e\webview\webview-visual.test.ts:258:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\test-results\webview-webview-visual-Web-2ebcb-cord-user-interaction-video-mac-safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|webview-webview-visual-Web-2ebcb-cord-user-interaction-video-mac-safari\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"module": "Node16",
+		"target": "ES2022",
+		"lib": [
+			"ES2022",
+			"DOM"
+		],
+		"sourceMap": true,
+		"rootDir": "src",
+		"outDir": "out",
+		"strict": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules/**/*",
+		"out/**/*",
+		"dist/**/*",
+		"src/test/e2e/**/*"
+	]
+}
