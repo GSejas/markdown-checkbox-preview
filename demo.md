@@ -1,14 +1,14 @@
 # Interactive Ch### Frontend Development
 - [x] Set up React project
-- [x] Create component structure  
-- [x] Implement user authentication
+- [ ] Create component structure  
+- [ ] Implement user authentication
   - [x] Login form
-  - [x] Registration form
-  - [ ] Password reset
-- [ ] Add routing
-  - [x] Setup React Router
-  - [ ] Protected routes
-  - [ ] Navigation components
+  - [ ] Registration form
+  - [x] Password reset
+- [x] Add routing
+  - [ ] Setup React Router
+  - [x] Protected routes
+  - [x] Navigation components
 - [ ] Style with CSS modules
 - [ ] Write unit tests
 
@@ -18,7 +18,7 @@
   - [ ] User model
   - [ ] Task model
   - [ ] Category model
-- [ ] Implement REST API
+- [x] Implement REST API
   - [ ] Authentication endpoints
   - [ ] CRUD operations
   - [ ] Error handling

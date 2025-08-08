@@ -1,7 +1,7 @@
 {
   "name": "markdown-checkbox-preview",
   "displayName": "Markdown Checkbox Preview",
-  "description": "Preview Markdown check-boxes that sync with the source",
+  "description": "Interactive Markdown checkbox preview with real-time sync, tree view navigation, and comprehensive task management for VS Code",
   "version": "1.0.0",
   "publisher": "GSejas",
   "license": "MIT",
@@ -17,13 +17,21 @@
     "markdown",
     "preview",
     "checkbox",
-    "live"
+    "task",
+    "todo",
+    "checklist",
+    "interactive",
+    "sync",
+    "tree-view",
+    "productivity"
   ],
   "engines": {
     "vscode": "^1.84.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Visualization", 
+    "Formatters"
   ],
   "activationEvents": [
     "onLanguage:markdown"
