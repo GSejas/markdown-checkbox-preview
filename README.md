@@ -35,7 +35,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 3. Browse your tasks organized by headers and hierarchy
 4. Click any checkbox in the tree to toggle its state
 
-   ![Tree View Checkboxes](media/media/menu tree checkboxes.gif)
+   ![Tree View Checkboxes](media/media/menu-tree-checkboxes.gif)
 
 5. Use the refresh button to update the tree view
 
