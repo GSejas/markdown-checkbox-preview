@@ -50,6 +50,11 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "checkboxTree.toggleHeaders",
+        "title": "Toggle Headers",
+        "icon": "$(eye)"
+      },
+      {
         "command": "checkboxTree.toggle",
         "title": "Toggle Checkbox",
         "icon": "$(check)"
@@ -81,6 +86,12 @@
       "view/title": [
         {
           "command": "checkboxTree.refresh",
+          "when": "view == checkboxTree",
+          "group": "navigation"
+        }
+        ,
+        {
+          "command": "checkboxTree.toggleHeaders",
           "when": "view == checkboxTree",
           "group": "navigation"
         }

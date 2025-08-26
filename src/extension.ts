@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('Markdown Checkbox Preview extension is now active!');
 
   // Create the tree data provider
-  const treeDataProvider = new CheckboxTreeDataProvider();
+  const treeDataProvider = new CheckboxTreeDataProvider(context);
   
   // Register the tree view
   const treeView = vscode.window.createTreeView('checkboxTree', {
@@ -21,6 +21,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   const refreshTreeDisposable = vscode.commands.registerCommand('checkboxTree.refresh', () => {
     treeDataProvider.refresh();
+  });
+
+  const toggleHeadersDisposable = vscode.commands.registerCommand('checkboxTree.toggleHeaders', () => {
+    treeDataProvider.toggleShowHeaders();
   });
 
   const toggleCheckboxDisposable = vscode.commands.registerCommand('checkboxTree.toggle', (item: CheckboxItem) => {
@@ -67,6 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
     refreshTreeDisposable,
     toggleCheckboxDisposable,
     navigateToHeaderDisposable,
+  toggleHeadersDisposable,
     treeView,
     statusBarItem
   );
