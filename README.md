@@ -14,6 +14,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 - **Status bar integration** showing completion statistics
 - **Theme integration** matching VS Code colors
 - **Keyboard support** for accessibility
+- **Toggle Headers** functionality to show/hide headers in tree view for focused task management
 
 ## Usage
 
@@ -38,6 +39,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
    ![Tree View Checkboxes](media/menu-tree-checkboxes.gif)
 
 5. Use the refresh button to update the tree view
+6. **Toggle Headers visibility** using the eye icon to show/hide headers in the tree view for focused task management
 
 ## Supported Syntax
 

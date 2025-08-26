@@ -4,6 +4,34 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.4] - 2025-08-26
+
+### ✨ **Added**
+- **Toggle Headers Functionality** 👁️
+  - Added "Toggle Headers" button (eye icon) in tree view toolbar
+  - Show/hide headers in the checkbox tree view for focused task management
+  - Maintains checkbox functionality while allowing users to focus on tasks only
+  - Enhanced user experience with flexible viewing options
+
+### 🛠️ **Enhanced**
+- Improved tree view interface with better control options
+
+### 🎯 **Technical**
+- Implemented `checkboxTree.toggleHeaders` command
+- Added eye icon for intuitive toggle functionality
+- Clean code improvements and test result cleanup
+
+## [1.0.3] - 2025-08-08
+
+### 🔧 **Fixed**
+- Corrected image paths for tree view checkboxes in README
+- Updated tree view checkbox image path references
+- Version increment for marketplace compatibility
+
+### 📸 **Media**
+- Added menu tree checkbox image for enhanced UI experience
+- Improved visual documentation assets
+
 ## [1.0.2] - 2025-08-08
 
 ### ✨ **Added**
