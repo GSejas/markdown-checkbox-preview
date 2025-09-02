@@ -7,14 +7,15 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 ## Features
 
 - **Interactive checkboxes** that can be clicked to toggle state
-- **Clickable headers** for quick navigation to sections in source file
 - **Live sync** - Changes are immediately synced back to the source Markdown file  
-- **Progress tracking** with visual progress bar
+- **Progress tracking** with visual progress bar and hover over support
 - **Hierarchical tree view** in the Explorer sidebar showing all checkboxes organized by headers
 - **Status bar integration** showing completion statistics
-- **Theme integration** matching VS Code colors
-- **Keyboard support** for accessibility
-- **Toggle Headers** functionality to show/hide headers in tree view for focused task management
+- **Hover information** - Hover over checkboxes to see status, content, and quick toggle actions
+- **CodeLens integration** - See toggle buttons directly above checkbox lines in the editor
+- **Smart navigation** - Click headers in preview or tree to jump to source locations
+
+![Hover over support](media\markdown-checkbox-hoverover.gif)
 
 ## Usage
 
@@ -31,6 +32,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
    ![Real-time Sync](media/markdown-checkbox-preview-real-time-sync.gif)
 
 ### Tree View Navigation
+
 1. Open a Markdown file with checkboxes
 2. Look for "Markdown Checkboxes" section in the Explorer sidebar
 3. Browse your tasks organized by headers and hierarchy
@@ -40,6 +42,19 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 
 5. Use the refresh button to update the tree view
 6. **Toggle Headers visibility** using the eye icon to show/hide headers in the tree view for focused task management
+
+### Hover & CodeLens Support
+
+1. **Hover over checkboxes** in the editor to see:
+   - Current status (checked/unchecked)
+   - Task content
+   - Quick toggle action
+   - Position and formatting information
+
+2. **CodeLens actions** appear above checkbox lines showing:
+   - Toggle buttons with visual icons
+   - One-click checkbox state changes
+   - Seamless integration with VS Code's editor
 
 ## Supported Syntax
 

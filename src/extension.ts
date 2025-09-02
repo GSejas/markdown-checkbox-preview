@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { renderMarkdown, getTaskListCount } from './renderer';
 import { CheckboxTreeDataProvider, CheckboxItem } from './checkboxTree';
+import { CheckboxCodeLensProvider } from './providers/checkboxCodeLensProvider';
+import { CheckboxHoverProvider } from './providers/checkboxHoverProvider';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Markdown Checkbox Preview extension is now active!');
@@ -13,6 +15,20 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider: treeDataProvider,
     showCollapseAll: true
   });
+
+  // Create and register providers
+  const codeLensProvider = new CheckboxCodeLensProvider(context);
+  const hoverProvider = new CheckboxHoverProvider(context);
+  
+  const codeLensDisposable = vscode.languages.registerCodeLensProvider(
+    { scheme: 'file', language: 'markdown' },
+    codeLensProvider
+  );
+  
+  const hoverDisposable = vscode.languages.registerHoverProvider(
+    { scheme: 'file', language: 'markdown' },
+    hoverProvider
+  );
 
   // Register commands
   const openPreviewDisposable = vscode.commands.registerCommand('checkboxPreview.open', () => {
@@ -33,6 +49,16 @@ export function activate(context: vscode.ExtensionContext) {
 
   const navigateToHeaderDisposable = vscode.commands.registerCommand('checkboxTree.navigateToHeader', (item: CheckboxItem) => {
     treeDataProvider.navigateToHeader(item);
+  });
+
+  const checkboxToggleDisposable = vscode.commands.registerCommand('checkboxPreview.toggleCheckbox', (uri: vscode.Uri, lineNumber: number) => {
+    const document = vscode.workspace.textDocuments.find(doc => doc.uri.toString() === uri.toString());
+    if (document) {
+      const editor = vscode.window.visibleTextEditors.find(editor => editor.document === document);
+      if (editor) {
+        toggleCheckboxAtLine(editor, lineNumber);
+      }
+    }
   });
 
   // Add status bar item for completion stats
@@ -71,9 +97,12 @@ export function activate(context: vscode.ExtensionContext) {
     refreshTreeDisposable,
     toggleCheckboxDisposable,
     navigateToHeaderDisposable,
+    checkboxToggleDisposable,
   toggleHeadersDisposable,
     treeView,
-    statusBarItem
+    statusBarItem,
+    codeLensDisposable,
+    hoverDisposable
   );
 }
 

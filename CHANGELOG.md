@@ -4,6 +4,32 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.5] - 2025-09-01
+
+### ✨ **Added**
+- **Hover Provider** 🖱️
+  - Rich hover information when hovering over checkboxes in the editor
+  - Shows checkbox status, content, line information, and quick toggle actions
+  - Interactive command links for instant checkbox toggling
+  - Displays formatting details (indentation, list markers)
+
+- **CodeLens Provider** 👁️‍🗨️
+  - Visual toggle buttons appear above checkbox lines in the editor
+  - One-click checkbox state changes directly in the editor
+  - Seamless integration with VS Code's CodeLens system
+  - Enhanced productivity with inline toggle actions
+
+### 🛠️ **Enhanced**
+- Complete redesign of provider architecture for checkbox-focused functionality
+- Improved editor integration with native VS Code features
+- Better accessibility and user experience for checkbox management
+
+### 🎯 **Technical**
+- Replaced Mermaid-focused providers with checkbox-specific implementations
+- Added `CheckboxCodeLensProvider` and `CheckboxHoverProvider` classes
+- Integrated providers into main extension activation
+- Enhanced checkbox detection and interaction patterns
+
 ## [1.0.4] - 2025-08-26
 
 ### ✨ **Added**
