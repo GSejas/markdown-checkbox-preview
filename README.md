@@ -16,7 +16,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 - **CodeLens integration** - See toggle buttons directly above checkbox lines in the editor
 - **Smart navigation** - Click headers in preview or tree to jump to source locations
 
-![Hover over support](media\markdown-checkbox-hoverover.gif)
+![Hover over support](media\codelness-demo.gif)
 
 ## Usage
 
@@ -83,15 +83,6 @@ Install from the VS Code Extension Marketplace or use the .vsix file.
 
 VS Code 1.84.0 or higher
 
-## v1.0.1
+## Contributing
 
-- **Clickable Headers**: Click any header in the preview to jump to that section in the source editor
-- **Enhanced Navigation**: Seamless navigation between preview and source with visual feedback
-- **Improved User Experience**: Headers show hover effects and tooltips for better discoverability
-
-## v1.0.0
-
-- **Hierarchical Tree View**: Navigate all checkboxes in the Explorer sidebar
-- **Status Bar Integration**: See completion stats at a glance
-- **Nested Checkbox Support**: Handle indented/nested task lists
-- **Header Organization**: Tasks grouped under their respective headers
+Contributions are welcome! Please see [CHANGELOG.md](CHANGELOG.md) for version history and development notes.

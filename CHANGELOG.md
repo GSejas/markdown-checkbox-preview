@@ -4,6 +4,34 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.7] - 2025-09-02
+
+### 🔧 **Fixed**
+- **CodeLens Reliability** 🎯
+  - Fixed inconsistent CodeLens display across different markdown documents
+  - Added proper event handling with `onDidChangeCodeLenses` for automatic refresh
+  - Enhanced debugging with detailed console logging for troubleshooting
+  - Improved checkbox detection with more robust regex patterns
+
+### ✨ **Added**
+- **Configuration Support** ⚙️
+  - Added `markdown-checkbox-preview.enableCodeLens` setting to toggle CodeLens on/off
+  - Better user control over extension features
+  - Configurable CodeLens behavior
+
+### 🛠️ **Enhanced**
+- **CodeLens Provider** 👁️‍🗨️
+  - More reliable checkbox detection and CodeLens generation
+  - Better performance with optimized refresh mechanisms
+  - Enhanced error handling and edge case support
+  - Improved consistency across different document types
+
+### 🎯 **Technical**
+- Enhanced `CheckboxCodeLensProvider` with event emitters for real-time updates
+- Added comprehensive debugging and logging for development
+- Fixed linting issues in performance tests
+- Improved provider architecture for better reliability
+
 ## [1.0.5] - 2025-09-01
 
 ### ✨ **Added**
