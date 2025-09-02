@@ -285,10 +285,44 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
             margin-bottom: 32px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: box-shadow 0.2s ease;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
         .progress-container:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .no-tasks-container {
+            background-color: var(--vscode-editorWidget-background);
+            border: 1px solid var(--vscode-editorWidget-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 32px;
+            text-align: center;
+            color: var(--vscode-descriptionForeground);
+        }
+
+        .no-tasks-header {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--vscode-editorWidget-foreground);
+        }
+
+        .no-tasks-message {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .no-tasks-message code {
+            background-color: var(--vscode-textBlockQuote-background);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: var(--vscode-editor-font-family);
+            font-size: 13px;
         }
 
         .progress-header {
@@ -511,13 +545,23 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 </head>
 <body>
     <div class="main-container">
+        ${stats.total > 0 ? `
         <div class="progress-container">
             <div class="progress-header">📊 Task Progress</div>
             <div class="progress-bar-container">
-                <div id="progress-bar" class="progress-bar" style="width: ${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%"></div>
+                <div id="progress-bar" class="progress-bar" style="width: ${(stats.completed / stats.total) * 100}%"></div>
             </div>
-            <div id="progress-text" class="progress-text">${stats.completed}/${stats.total} tasks completed (${stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0}%)</div>
+            <div id="progress-text" class="progress-text">${stats.completed}/${stats.total} tasks completed (${Math.round((stats.completed / stats.total) * 100)}%)</div>
         </div>
+        ` : `
+        <div class="no-tasks-container">
+            <div class="no-tasks-header">📝 No Task Checklists Found</div>
+            <div class="no-tasks-message">
+                This markdown file doesn't contain any checkboxes yet.<br>
+                Add some tasks using the format: <code>- [ ] Task description</code>
+            </div>
+        </div>
+        `}
         
         <div class="content-container">
             <div id="root">${renderedContent}</div>

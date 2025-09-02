@@ -2,9 +2,10 @@
   "name": "markdown-checkbox-preview",
   "displayName": "Markdown Checkbox Preview",
   "description": "Interactive Markdown checkbox preview with real-time sync, tree view navigation, and comprehensive task management for VS Code",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "publisher": "GSejas",
   "license": "MIT",
+  "icon": "media/icon (128 x 128 px).png",
   "repository": {
     "type": "git",
     "url": "https://github.com/gsejas/markdown-checkbox-preview.git"
@@ -38,6 +39,16 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Markdown Checkbox Preview",
+      "properties": {
+        "markdown-checkbox-preview.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens for markdown checkboxes"
+        }
+      }
+    },
     "commands": [
       {
         "command": "checkboxPreview.open",

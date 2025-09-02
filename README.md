@@ -2,7 +2,8 @@
 
 A VS Code extension that provides an interactive preview for Markdown checkboxes with live editing capabilities and hierarchical tree view navigation.
 
-![Markdown Preview](media/markdown-preview.png)
+![Markdown Preview](media\full-demo-1.0.6_128colors_32colors.gif)
+> This extension empowers developers with CodeLens actions to toggle markdown checkboxes.
 
 ## Features
 

@@ -3,14 +3,14 @@
 This document demonstrates complex nested structures for comprehensive testing.
 
 ## Phase 1: Planning and Design
-- [x] Requirements gathering
+- [ ] Requirements gathering
   - [x] Stakeholder interviews
-  - [x] Market research
+  - [ ] Market research
   - [ ] Competitive analysis
     - [x] Feature comparison
     - [ ] Pricing analysis
     - [ ] User experience review
-- [ ] System design
+- [x] System design
   - [x] Architecture planning
     - [x] Database design
     - [x] API specification
@@ -18,7 +18,7 @@ This document demonstrates complex nested structures for comprehensive testing.
       - [ ] Authentication strategy
       - [ ] Data encryption
       - [x] Access control
-  - [ ] UI/UX mockups
+  - [x] UI/UX mockups
     - [x] Wireframes
     - [ ] High-fidelity designs
     - [ ] User flow diagrams

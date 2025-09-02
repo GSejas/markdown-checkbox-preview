@@ -47,6 +47,15 @@ export class CheckboxTreeItem extends vscode.TreeItem {
 
     this.tooltip = `Line ${item.line + 1}: ${item.label}`;
 
+    // Special case for "no tasks" message
+    if (item.level === 0 && item.label === "No task checklists found in this file") {
+      this.description = "📝";
+      this.contextValue = 'no-tasks';
+      this.iconPath = new vscode.ThemeIcon('info', new vscode.ThemeColor('descriptionForeground'));
+      this.tooltip = "Add checkboxes to your markdown file to see tasks here";
+      return;
+    }
+
     // Determine if this is a header (level < 6) or checkbox (level >= 6)
     const isHeader = item.level < 6;
 
@@ -206,6 +215,17 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
   getChildren(element?: CheckboxItem): Thenable<CheckboxItem[]> {
     if (!element) {
       // Return root items (top-level checkboxes and headers)
+      if (this.checkboxItems.length === 0) {
+        // Return a special "no tasks" item
+        const noTasksItem: CheckboxItem = {
+          label: "No task checklists found in this file",
+          line: 0,
+          checked: false,
+          level: 0,
+          children: []
+        };
+        return Promise.resolve([noTasksItem]);
+      }
       return Promise.resolve(this.checkboxItems);
     } else {
       // Return children of the given element
