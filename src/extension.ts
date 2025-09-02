@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Create the tree data provider
   const treeDataProvider = new CheckboxTreeDataProvider(context);
-  
+
   // Register the tree view
   const treeView = vscode.window.createTreeView('checkboxTree', {
     treeDataProvider: treeDataProvider,
@@ -19,12 +19,12 @@ export function activate(context: vscode.ExtensionContext) {
   // Create and register providers
   const codeLensProvider = new CheckboxCodeLensProvider(context);
   const hoverProvider = new CheckboxHoverProvider(context);
-  
+
   const codeLensDisposable = vscode.languages.registerCodeLensProvider(
     { scheme: 'file', language: 'markdown' },
     codeLensProvider
   );
-  
+
   const hoverDisposable = vscode.languages.registerHoverProvider(
     { scheme: 'file', language: 'markdown' },
     hoverProvider
@@ -65,13 +65,13 @@ export function activate(context: vscode.ExtensionContext) {
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = "$(checklist) 0/0 tasks";
   statusBarItem.tooltip = "Markdown checkbox completion";
-  
+
   // Update status bar when tree changes
   const updateStatusBar = () => {
     const stats = treeDataProvider.getCompletionStats();
     const percentage = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
     statusBarItem.text = `$(checklist) ${stats.completed}/${stats.total} tasks (${percentage}%)`;
-    
+
     if (stats.total > 0) {
       statusBarItem.show();
     } else {
@@ -98,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
     toggleCheckboxDisposable,
     navigateToHeaderDisposable,
     checkboxToggleDisposable,
-  toggleHeadersDisposable,
+    toggleHeadersDisposable,
     treeView,
     statusBarItem,
     codeLensDisposable,
@@ -108,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?: CheckboxTreeDataProvider) {
   const editor = vscode.window.activeTextEditor;
-  
+
   if (!editor || editor.document.languageId !== 'markdown') {
     vscode.window.showErrorMessage('Please open a Markdown file first.');
     return;
@@ -116,7 +116,7 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
 
   const document = editor.document;
   const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
-  
+
   // Create the webview panel
   const panel = vscode.window.createWebviewPanel(
     'checkboxPreview',
@@ -140,12 +140,12 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
       const newContent = event.document.getText();
       const html = renderMarkdown(newContent);
       const stats = getTaskListCount(newContent);
-      
+
       panel.webview.postMessage({
         type: 'rerender',
         html: html
       });
-      
+
       panel.webview.postMessage({
         type: 'updateProgress',
         completed: stats.completed,
@@ -181,17 +181,17 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
 
 function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   const document = editor.document;
-  
+
   if (lineNumber >= document.lineCount) {
     return;
   }
 
   const line = document.lineAt(lineNumber);
   const lineText = line.text;
-  
+
   // Match different checkbox patterns
   let updatedText = lineText;
-  
+
   // Handle [ ] -> [x]
   if (lineText.includes('[ ]')) {
     updatedText = lineText.replace(/\[ \]/, '[x]');
@@ -200,7 +200,7 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   else if (lineText.match(/\[[xX]\]/)) {
     updatedText = lineText.replace(/\[[xX]\]/, '[ ]');
   }
-  
+
   // Apply the edit if there was a change
   if (updatedText !== lineText) {
     editor.edit(editBuilder => {
@@ -215,7 +215,7 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
 
 function navigateToLine(editor: vscode.TextEditor, lineNumber: number) {
   const document = editor.document;
-  
+
   if (lineNumber >= document.lineCount) {
     return;
   }
@@ -223,10 +223,10 @@ function navigateToLine(editor: vscode.TextEditor, lineNumber: number) {
   // Create a new selection at the specified line
   const position = new vscode.Position(lineNumber, 0);
   const range = new vscode.Range(position, position);
-  
+
   editor.selection = new vscode.Selection(range.start, range.end);
   editor.revealRange(range, vscode.TextEditorRevealType.InCenter);
-  
+
   // Focus the editor
   vscode.window.showTextDocument(document, editor.viewColumn);
 }

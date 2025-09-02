@@ -44,18 +44,18 @@ export class CheckboxTreeItem extends vscode.TreeItem {
     public readonly collapsibleState: vscode.TreeItemCollapsibleState
   ) {
     super(item.label, collapsibleState);
-    
+
     this.tooltip = `Line ${item.line + 1}: ${item.label}`;
-    
+
     // Determine if this is a header (level < 6) or checkbox (level >= 6)
     const isHeader = item.level < 6;
-    
+
     if (isHeader) {
       // Header item - clicking navigates to that line
       this.description = `H${item.level}`;
       this.contextValue = 'header';
       this.iconPath = new vscode.ThemeIcon('symbol-file', new vscode.ThemeColor('symbolIcon.textForeground'));
-      
+
       // Command to navigate to header line when clicked
       this.command = {
         command: 'checkboxTree.navigateToHeader',
@@ -66,12 +66,12 @@ export class CheckboxTreeItem extends vscode.TreeItem {
       // Checkbox item - clicking toggles state
       this.description = item.checked ? '✓' : '○';
       this.contextValue = 'checkbox';
-      
+
       // Set icon based on checkbox state
-      this.iconPath = item.checked 
+      this.iconPath = item.checked
         ? new vscode.ThemeIcon('check', new vscode.ThemeColor('charts.green'))
         : new vscode.ThemeIcon('circle-outline', new vscode.ThemeColor('charts.gray'));
-      
+
       // Command to toggle checkbox when clicked
       this.command = {
         command: 'checkboxTree.toggle',
@@ -223,20 +223,20 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
     const document = activeEditor.document;
     const text = document.getText();
     const lines = text.split('\n');
-    
+
     const items: CheckboxItem[] = [];
     const stack: CheckboxItem[] = []; // Stack to track hierarchy
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmed = line.trim();
-      
+
       // Check for headers
       const headerMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
       if (headerMatch) {
         const level = headerMatch[1].length;
         const headerText = headerMatch[2];
-        
+
         const headerItem: CheckboxItem = {
           label: headerText,
           line: i,
@@ -244,12 +244,12 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
           level: level,
           children: []
         };
-        
+
         // Remove items from stack that are at same or deeper level
         while (stack.length > 0 && stack[stack.length - 1].level >= level) {
           stack.pop();
         }
-        
+
         // Add to parent if exists
         if (stack.length > 0) {
           const parent = stack[stack.length - 1];
@@ -258,21 +258,21 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
         } else {
           items.push(headerItem);
         }
-        
+
         stack.push(headerItem);
         continue;
       }
-      
+
       // Check for checkboxes
       const checkboxMatch = trimmed.match(/^[-*+]\s*\[([x\s])\]\s*(.+)$/i);
       if (checkboxMatch) {
         const isChecked = checkboxMatch[1].toLowerCase() === 'x';
         const taskText = checkboxMatch[2];
-        
+
         // Determine indentation level
         const indentMatch = line.match(/^(\s*)/);
         const indentLevel = indentMatch ? Math.floor(indentMatch[1].length / 2) + 6 : 6; // Start after headers
-        
+
         const checkboxItem: CheckboxItem = {
           label: taskText,
           line: i,
@@ -280,7 +280,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
           level: indentLevel,
           children: []
         };
-        
+
         // Find appropriate parent
         let parent: CheckboxItem | undefined;
         for (let j = stack.length - 1; j >= 0; j--) {
@@ -289,7 +289,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
             break;
           }
         }
-        
+
         if (parent) {
           parent.children.push(checkboxItem);
           checkboxItem.parent = parent;
@@ -298,7 +298,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
         }
       }
     }
-    
+
     this.checkboxItems = items;
     // If headers are hidden, promote their children up into the root list.
     if (!this.showHeaders) {
@@ -339,7 +339,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
     const document = activeEditor.document;
     const line = document.lineAt(item.line);
     const lineText = line.text;
-    
+
     // Toggle checkbox state
     let updatedText = lineText;
     if (lineText.includes('[ ]')) {
@@ -347,7 +347,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
     } else if (lineText.match(/\[[xX]\]/)) {
       updatedText = lineText.replace(/\[[xX]\]/, '[ ]');
     }
-    
+
     if (updatedText !== lineText) {
       await activeEditor.edit(editBuilder => {
         editBuilder.replace(line.range, updatedText);
@@ -363,10 +363,10 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
 
     const position = new vscode.Position(item.line, 0);
     const range = new vscode.Range(position, position);
-    
+
     activeEditor.selection = new vscode.Selection(range.start, range.end);
     activeEditor.revealRange(range, vscode.TextEditorRevealType.InCenter);
-    
+
     // Focus the editor
     await vscode.window.showTextDocument(activeEditor.document, activeEditor.viewColumn);
   }
@@ -374,7 +374,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
   getCompletionStats(): { completed: number; total: number } {
     let completed = 0;
     let total = 0;
-    
+
     const countItems = (items: CheckboxItem[]) => {
       for (const item of items) {
         // Only count actual checkboxes, not headers
@@ -387,7 +387,7 @@ export class CheckboxTreeDataProvider implements vscode.TreeDataProvider<Checkbo
         countItems(item.children);
       }
     };
-    
+
     countItems(this.checkboxItems);
     return { completed, total };
   }
