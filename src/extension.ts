@@ -37,13 +37,20 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // New command for setting preview mode from webview
-  const setPreviewModeDisposable = vscode.commands.registerCommand('checkboxPreview.setPreviewMode', async (args: { uri: string, mode: 'default' | PreviewMode }) => {
+  const setPreviewModeDisposable = vscode.commands.registerCommand('checkboxPreview.setPreviewMode', async (args: { uri: string, mode: PreviewMode }) => {
     const config = vscode.workspace.getConfiguration('markdown-checkbox-preview');
-    const fileModes = config.get<Record<string, string>>('fileSpecificPreviewModes', {});
+    const defaultMode = config.get<PreviewMode>('defaultPreviewMode', 'manual');
+    
+    // Use inspect to read the value directly from the workspace settings.
+    const inspection = config.inspect<Record<string, string>>('fileSpecificPreviewModes');
+    const fileModes = inspection?.workspaceValue ? { ...inspection.workspaceValue } : {};
 
-    if (args.mode === 'default') {
+    // If the user selects the mode that is currently the global default,
+    // we remove the file-specific setting to make it fall back to the default.
+    if (args.mode === defaultMode) {
       delete fileModes[args.uri];
     } else {
+      // Otherwise, we set the specific override.
       fileModes[args.uri] = args.mode;
     }
 
@@ -376,17 +383,25 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
   const defaultMode = config.get<PreviewMode>('defaultPreviewMode', 'manual');
   const fileModes = config.get<Record<string, string>>('fileSpecificPreviewModes', {});
   const fileSpecificMode = fileModes[uri.toString()];
-  const selectedValue = fileSpecificMode ? fileSpecificMode : 'default';
+  
+  // Determine the effective mode for this file to select the correct dropdown option
+  const effectiveMode = (fileSpecificMode as PreviewMode) || defaultMode;
 
-  const options = [
-    { value: 'default', text: `Default (${defaultMode})` },
-    { value: 'manual', text: 'Manual' },
-    { value: 'ephemeral', text: 'Ephemeral' },
-    { value: 'sticky', text: 'Sticky' }
+  const options: { value: PreviewMode, text: string }[] = [
+      { value: 'manual', text: 'Manual' },
+      { value: 'ephemeral', text: 'Ephemeral' },
+      { value: 'sticky', text: 'Sticky' }
   ];
 
+  // Append '(Default)' to the label of the default mode
+  options.forEach(opt => {
+      if (opt.value === defaultMode) {
+          opt.text += ' (Default)';
+      }
+  });
+
   const dropdownOptions = options.map(opt =>
-    `<option value="${opt.value}" ${selectedValue === opt.value ? 'selected' : ''}>${opt.text}</option>`
+      `<option value="${opt.value}" ${effectiveMode === opt.value ? 'selected' : ''}>${opt.text}</option>`
   ).join('');
 
   return `<!DOCTYPE html>
