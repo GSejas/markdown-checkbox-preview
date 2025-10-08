@@ -85,14 +85,48 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider.navigateToHeader(item);
   });
 
-  const checkboxToggleDisposable = vscode.commands.registerCommand('checkboxPreview.toggleCheckbox', (uri: vscode.Uri, lineNumber: number) => {
-    const document = vscode.workspace.textDocuments.find(doc => doc.uri.toString() === uri.toString());
-    if (document) {
-      const editor = vscode.window.visibleTextEditors.find(editor => editor.document === document);
-      if (editor) {
-        toggleCheckboxAtLine(editor, lineNumber);
-      }
+  const checkboxToggleDisposable = vscode.commands.registerCommand('checkboxPreview.toggleCheckbox', (arg1: any, arg2: any) => {
+    let targetUri: vscode.Uri;
+    let targetLineNumber: number;
+
+    // Type guard for URI-like objects that might have been marshalled
+    const isUriLike = (p: any): p is vscode.Uri => p && typeof p.scheme === 'string' && typeof p.path === 'string';
+
+    // Case 1: Invoked from Hover Provider (single object argument)
+    if (typeof arg1 === 'object' && arg1 !== null && typeof arg1.uri === 'string' && typeof arg1.line === 'number') {
+        try {
+            targetUri = vscode.Uri.parse(arg1.uri, true);
+            targetLineNumber = arg1.line;
+        } catch (e) {
+            console.error('Error parsing URI from hover args:', e);
+            vscode.window.showErrorMessage('Could not toggle checkbox: invalid URI.');
+            return;
+        }
+    } 
+    // Case 2: Invoked from CodeLens Provider (uri, lineNumber arguments)
+    else if (isUriLike(arg1) && typeof arg2 === 'number') {
+        targetUri = arg1;
+        targetLineNumber = arg2;
     }
+    else {
+        vscode.window.showErrorMessage('Could not toggle checkbox: invalid arguments provided.');
+        console.error('Invalid arguments for toggleCheckbox command', arg1, arg2);
+        return;
+    }
+
+    vscode.workspace.openTextDocument(targetUri).then(document => {
+        // Find an editor for the document, or open one.
+        // Using showTextDocument is robust as it will find an existing editor or open a new one.
+        vscode.window.showTextDocument(document, { preserveFocus: true }).then(editor => {
+            toggleCheckboxAtLine(editor, targetLineNumber);
+        }, (err) => {
+            vscode.window.showErrorMessage(`Could not show document to toggle checkbox: ${err.message}`);
+            console.error('Error showing document for toggle:', err);
+        });
+    }, (err) => {
+        vscode.window.showErrorMessage(`Could not open document to toggle checkbox: ${err.message}`);
+        console.error('Error opening document for toggle:', err);
+    });
   });
 
   // Handle automatic preview opening/closing
@@ -414,26 +448,12 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .no-tasks-container {
-            background-color: var(--vscode-editorWidget-background);
-            border: 1px solid var(--vscode-editorWidget-border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 32px;
-            text-align: center;
-            color: var(--vscode-descriptionForeground);
-        }
-
-        .no-tasks-header {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: var(--vscode-editorWidget-foreground);
-        }
-
         .no-tasks-message {
             font-size: 14px;
             line-height: 1.5;
+            text-align: center;
+            color: var(--vscode-descriptionForeground);
+            padding-top: 8px;
         }
 
         .no-tasks-message code {
@@ -678,28 +698,25 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
 </head>
 <body>
     <div class="main-container">
-        ${stats.total > 0 ? `
         <div class="progress-container">
             <div class="progress-header-container">
-                <div class="progress-header">📊 Task Progress</div>
+                <div class="progress-header">${stats.total > 0 ? '📊 Task Progress' : '📝 No Task Checklists Found'}</div>
                 <select id="preview-mode-selector" class="preview-mode-selector" title="Set preview mode for this file">
                     ${dropdownOptions}
                 </select>
             </div>
+            ${stats.total > 0 ? `
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar" style="width: ${(stats.completed / stats.total) * 100}%"></div>
             </div>
             <div id="progress-text" class="progress-text">${stats.completed}/${stats.total} tasks completed (${Math.round((stats.completed / stats.total) * 100)}%)</div>
-        </div>
-        ` : `
-        <div class="no-tasks-container">
-            <div class="no-tasks-header">📝 No Task Checklists Found</div>
+            ` : `
             <div class="no-tasks-message">
                 This markdown file doesn't contain any checkboxes yet.<br>
                 Add some tasks using the format: <code>- [ ] Task description</code>
             </div>
+            `}
         </div>
-        `}
         
         <div class="content-container">
             <div id="root">${renderedContent}</div>
