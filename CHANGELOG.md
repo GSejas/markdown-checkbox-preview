@@ -4,6 +4,21 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.8] - 2025-10-07
+
+### ✨ **Added**
+- **Automatic Preview** 🚀
+  - Automatically open a preview when a markdown file is opened.
+  - Configurable via `markdown-checkbox-preview.defaultPreviewMode` setting.
+  - Three modes available: `manual` (default), `ephemeral` (auto-opens and closes), and `sticky` (auto-opens and stays).
+
+### 🛠️ **Enhanced**
+- **File-Specific Settings** ⚙️
+  - Added a dropdown in the preview panel to set the preview mode (`manual`, `ephemeral`, `sticky`) for individual files.
+  - File-specific settings override the global default and are saved in the workspace.
+- **Panel Management** 🧠
+  - The extension now tracks open previews to avoid duplicates. Focusing a file with an open preview will reveal the existing panel.
+
 ## [1.0.7] - 2025-09-02
 
 ### 🔧 **Fixed**

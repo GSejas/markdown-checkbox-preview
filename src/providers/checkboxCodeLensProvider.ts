@@ -66,7 +66,7 @@ export class CheckboxCodeLensProvider implements vscode.CodeLensProvider {
       const toggleCommand = {
         title: checkbox.checked ? '$(check) Uncheck' : '$(circle-outline) Check',
         command: 'checkboxPreview.toggleCheckbox',
-        arguments: [document.uri, checkbox.lineNumber]
+        arguments: [{ uri: document.uri.toString(), line: checkbox.lineNumber }]
       };
 
       // Position CodeLens at the beginning of the line

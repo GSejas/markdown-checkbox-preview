@@ -55,6 +55,18 @@
     }
   });
 
+  // Handle preview mode change
+  const selector = document.getElementById('preview-mode-selector');
+  if (selector) {
+    selector.addEventListener('change', (event) => {
+      const newMode = event.target.value;
+      vscode.postMessage({
+        type: 'setMode',
+        mode: newMode
+      });
+    });
+  }
+
   // Update progress bar
   function updateProgressBar(completed, total) {
     const progressBar = document.getElementById('progress-bar');

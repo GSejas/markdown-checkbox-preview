@@ -2,7 +2,7 @@
   "name": "markdown-checkbox-preview",
   "displayName": "Markdown Checkbox Preview",
   "description": "Interactive Markdown checkbox codelens actions (toggle) support, preview with real-time sync, tree view navigation, and comprehensive task management for VS Code",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publisher": "GSejas",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -31,7 +31,7 @@
   },
   "categories": [
     "Other",
-    "Visualization", 
+    "Visualization",
     "Formatters"
   ],
   "activationEvents": [
@@ -46,6 +46,27 @@
           "type": "boolean",
           "default": true,
           "description": "Enable CodeLens for markdown checkboxes"
+        },
+        "markdown-checkbox-preview.defaultPreviewMode": {
+          "type": "string",
+          "default": "manual",
+          "enum": [
+            "manual",
+            "ephemeral",
+            "sticky"
+          ],
+          "description": "Default behavior for opening the interactive preview automatically.",
+          "enumDescriptions": [
+            "Previews must be opened manually.",
+            "Automatically open a preview for markdown files. The preview closes when you switch to a non-markdown file.",
+            "Automatically open a preview for markdown files. The preview remains open when you switch to other files."
+          ]
+        },
+        "markdown-checkbox-preview.fileSpecificPreviewModes": {
+          "type": "object",
+          "default": {},
+          "description": "File-specific overrides for the preview mode. It is recommended to manage this via the dropdown in the preview panel.",
+          "scope": "workspace"
         }
       }
     },
@@ -69,6 +90,10 @@
         "command": "checkboxTree.toggle",
         "title": "Toggle Checkbox",
         "icon": "$(check)"
+      },
+      {
+        "command": "checkboxPreview.setPreviewMode",
+        "title": "Set Preview Mode for File"
       }
     ],
     "views": {
@@ -99,8 +124,7 @@
           "command": "checkboxTree.refresh",
           "when": "view == checkboxTree",
           "group": "navigation"
-        }
-        ,
+        },
         {
           "command": "checkboxTree.toggleHeaders",
           "when": "view == checkboxTree",

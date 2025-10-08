@@ -4,6 +4,12 @@ import { CheckboxTreeDataProvider, CheckboxItem } from './checkboxTree';
 import { CheckboxCodeLensProvider } from './providers/checkboxCodeLensProvider';
 import { CheckboxHoverProvider } from './providers/checkboxHoverProvider';
 
+type PreviewMode = 'manual' | 'ephemeral' | 'sticky';
+
+// Global state to manage panels
+const activePanels = new Map<string, { panel: vscode.WebviewPanel, mode: PreviewMode }>();
+let lastActiveMarkdownUri: vscode.Uri | undefined;
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('Markdown Checkbox Preview extension is now active!');
 
@@ -30,9 +36,37 @@ export function activate(context: vscode.ExtensionContext) {
     hoverProvider
   );
 
+  // New command for setting preview mode from webview
+  const setPreviewModeDisposable = vscode.commands.registerCommand('checkboxPreview.setPreviewMode', async (args: { uri: string, mode: 'default' | PreviewMode }) => {
+    const config = vscode.workspace.getConfiguration('markdown-checkbox-preview');
+    const fileModes = config.get<Record<string, string>>('fileSpecificPreviewModes', {});
+
+    if (args.mode === 'default') {
+      delete fileModes[args.uri];
+    } else {
+      fileModes[args.uri] = args.mode;
+    }
+
+    await config.update('fileSpecificPreviewModes', fileModes, vscode.ConfigurationTarget.Workspace);
+
+    // After updating settings, get the *effective* new mode for the file
+    const effectiveMode = getPreviewModeForFile(vscode.Uri.parse(args.uri));
+
+    // Update the in-memory state of the active panel to apply the change immediately
+    const panelInfo = activePanels.get(args.uri);
+    if (panelInfo) {
+      panelInfo.mode = effectiveMode;
+    }
+  });
+
   // Register commands
   const openPreviewDisposable = vscode.commands.registerCommand('checkboxPreview.open', () => {
-    openCheckboxPreview(context, treeDataProvider);
+    const editor = vscode.window.activeTextEditor;
+    if (editor && editor.document.languageId === 'markdown') {
+      createOrShowPreview(context, editor.document.uri, treeDataProvider);
+    } else {
+      vscode.window.showErrorMessage('Please open a Markdown file first.');
+    }
   });
 
   const refreshTreeDisposable = vscode.commands.registerCommand('checkboxTree.refresh', () => {
@@ -60,6 +94,16 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   });
+
+  // Handle automatic preview opening/closing
+  const onDidChangeActiveEditorDisposable = vscode.window.onDidChangeActiveTextEditor(editor => {
+    handleActiveEditorChange(editor, context, treeDataProvider);
+  });
+
+  // Initial check for the currently active editor
+  if (vscode.window.activeTextEditor) {
+    handleActiveEditorChange(vscode.window.activeTextEditor, context, treeDataProvider);
+  }
 
   // Add status bar item for completion stats
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -102,41 +146,91 @@ export function activate(context: vscode.ExtensionContext) {
     treeView,
     statusBarItem,
     codeLensDisposable,
-    hoverDisposable
+    hoverDisposable,
+    setPreviewModeDisposable,
+    onDidChangeActiveEditorDisposable
   );
 }
 
-function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?: CheckboxTreeDataProvider) {
-  const editor = vscode.window.activeTextEditor;
+async function handleActiveEditorChange(editor: vscode.TextEditor | undefined, context: vscode.ExtensionContext, treeDataProvider: CheckboxTreeDataProvider) {
+  const newMarkdownUri = (editor && editor.document.languageId === 'markdown') ? editor.document.uri : undefined;
 
-  if (!editor || editor.document.languageId !== 'markdown') {
-    vscode.window.showErrorMessage('Please open a Markdown file first.');
+  // 1. Handle closing the previous ephemeral panel
+  if (lastActiveMarkdownUri) {
+    // If we are switching to a different file (or no file), check if the old panel should be closed.
+    if (!newMarkdownUri || newMarkdownUri.toString() !== lastActiveMarkdownUri.toString()) {
+      const panelInfo = activePanels.get(lastActiveMarkdownUri.toString());
+      // Close if the panel is ephemeral and is NOT the currently active element (i.e., user clicked a different editor, not the panel itself)
+      if (panelInfo && panelInfo.mode === 'ephemeral' && !panelInfo.panel.active) {
+        panelInfo.panel.dispose();
+      }
+    }
+  }
+
+  // 2. Handle opening a new panel
+  if (newMarkdownUri) {
+    const mode = getPreviewModeForFile(newMarkdownUri);
+    if (mode === 'ephemeral' || mode === 'sticky') {
+      createOrShowPreview(context, newMarkdownUri, treeDataProvider);
+    }
+  }
+
+  // 3. Update the state for the next change event
+  if (newMarkdownUri) {
+    lastActiveMarkdownUri = newMarkdownUri;
+  }
+  // If the new editor is not a markdown file, we don't clear lastActiveMarkdownUri.
+  // This allows us to correctly close its ephemeral panel on a subsequent editor change.
+}
+
+function getPreviewModeForFile(uri: vscode.Uri): PreviewMode {
+  const config = vscode.workspace.getConfiguration('markdown-checkbox-preview');
+  const fileModes = config.get<Record<string, string>>('fileSpecificPreviewModes', {});
+  const fileSpecificMode = fileModes[uri.toString()];
+
+  if (fileSpecificMode && ['manual', 'ephemeral', 'sticky'].includes(fileSpecificMode)) {
+    return fileSpecificMode as PreviewMode;
+  }
+
+  return config.get<PreviewMode>('defaultPreviewMode', 'manual');
+}
+
+async function createOrShowPreview(context: vscode.ExtensionContext, uri: vscode.Uri, treeDataProvider?: CheckboxTreeDataProvider) {
+  const uriString = uri.toString();
+  const existingPanelInfo = activePanels.get(uriString);
+
+  if (existingPanelInfo) {
+    existingPanelInfo.panel.reveal(vscode.ViewColumn.Beside, true);
     return;
   }
 
-  const document = editor.document;
-  const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
+  const document = await vscode.workspace.openTextDocument(uri);
+  if (!document) return;
 
-  // Create the webview panel
+  const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
   const panel = vscode.window.createWebviewPanel(
     'checkboxPreview',
     `📋 ${fileName} - Interactive Checkboxes`,
-    vscode.ViewColumn.Beside,
+    { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
     {
       enableScripts: true,
-      localResourceRoots: [
-        vscode.Uri.joinPath(context.extensionUri, 'media')
-      ],
+      localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
       retainContextWhenHidden: true
     }
   );
 
-  // Set the initial HTML content
-  panel.webview.html = getWebviewContent(panel.webview, context, document.getText());
+  const mode = getPreviewModeForFile(uri);
+  panel.webview.html = getWebviewContent(panel.webview, context, document.getText(), uri);
+
+  activePanels.set(uriString, { panel, mode });
+
+  panel.onDidDispose(() => {
+    activePanels.delete(uriString);
+  });
 
   // Handle document changes
   const changeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
-    if (event.document.uri.toString() === document.uri.toString()) {
+    if (event.document.uri.toString() === uriString) {
       const newContent = event.document.getText();
       const html = renderMarkdown(newContent);
       const stats = getTaskListCount(newContent);
@@ -152,7 +246,6 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
         total: stats.total
       });
 
-      // Refresh tree view if available
       if (treeDataProvider) {
         treeDataProvider.refresh();
       }
@@ -161,22 +254,28 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
 
   // Handle messages from the webview
   panel.webview.onDidReceiveMessage(message => {
+    const editor = vscode.window.visibleTextEditors.find(e => e.document.uri.toString() === uriString);
+    if (!editor && message.type !== 'setMode') return;
+
     switch (message.type) {
       case 'toggle':
-        toggleCheckboxAtLine(editor, message.line);
+        if (editor) toggleCheckboxAtLine(editor, message.line);
         break;
       case 'navigate':
-        navigateToLine(editor, message.line);
+        if (editor) navigateToLine(editor, message.line);
+        break;
+      case 'setMode':
+        vscode.commands.executeCommand('checkboxPreview.setPreviewMode', {
+          uri: uriString,
+          mode: message.mode
+        });
         break;
     }
   });
 
-  // Clean up when panel is disposed
   panel.onDidDispose(() => {
     changeDisposable.dispose();
   });
-
-  context.subscriptions.push(changeDisposable);
 }
 
 function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
@@ -231,13 +330,30 @@ function navigateToLine(editor: vscode.TextEditor, lineNumber: number) {
   vscode.window.showTextDocument(document, editor.viewColumn);
 }
 
-function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext, markdownContent: string): string {
+function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext, markdownContent: string, uri: vscode.Uri): string {
   const scriptUri = webview.asWebviewUri(
     vscode.Uri.joinPath(context.extensionUri, 'media', 'main.js')
   );
 
   const renderedContent = renderMarkdown(markdownContent);
   const stats = getTaskListCount(markdownContent);
+
+  const config = vscode.workspace.getConfiguration('markdown-checkbox-preview');
+  const defaultMode = config.get<PreviewMode>('defaultPreviewMode', 'manual');
+  const fileModes = config.get<Record<string, string>>('fileSpecificPreviewModes', {});
+  const fileSpecificMode = fileModes[uri.toString()];
+  const selectedValue = fileSpecificMode ? fileSpecificMode : 'default';
+
+  const options = [
+    { value: 'default', text: `Default (${defaultMode})` },
+    { value: 'manual', text: 'Manual' },
+    { value: 'ephemeral', text: 'Ephemeral' },
+    { value: 'sticky', text: 'Sticky' }
+  ];
+
+  const dropdownOptions = options.map(opt =>
+    `<option value="${opt.value}" ${selectedValue === opt.value ? 'selected' : ''}>${opt.text}</option>`
+  ).join('');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -289,6 +405,9 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .progress-container:hover {
@@ -324,15 +443,30 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
             font-family: var(--vscode-editor-font-family);
             font-size: 13px;
         }
+        
+        .progress-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .progress-header {
             font-weight: 600;
             font-size: 16px;
-            margin-bottom: 12px;
             color: var(--vscode-editorWidget-foreground);
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+        
+        .preview-mode-selector {
+            font-family: var(--vscode-font-family);
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            border: 1px solid var(--vscode-input-border);
         }
 
         .progress-bar-container {
@@ -340,7 +474,6 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
             border-radius: 12px;
             height: 10px;
             overflow: hidden;
-            margin-bottom: 12px;
             position: relative;
         }
 
@@ -547,7 +680,12 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
     <div class="main-container">
         ${stats.total > 0 ? `
         <div class="progress-container">
-            <div class="progress-header">📊 Task Progress</div>
+            <div class="progress-header-container">
+                <div class="progress-header">📊 Task Progress</div>
+                <select id="preview-mode-selector" class="preview-mode-selector" title="Set preview mode for this file">
+                    ${dropdownOptions}
+                </select>
+            </div>
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar" style="width: ${(stats.completed / stats.total) * 100}%"></div>
             </div>
