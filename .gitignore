@@ -60,9 +60,6 @@ coverage/
 .env.test.local
 .env.production.local
 
-# Package lock files (if using yarn)
-package-lock.json
-
 # IDE files
 .idea/
 *.sublime-*
