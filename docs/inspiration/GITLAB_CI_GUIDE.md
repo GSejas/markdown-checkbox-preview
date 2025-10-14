@@ -336,6 +336,124 @@ launchArgs: ['--disable-dev-shm-usage']
 
 **Github**: Use `allow_failure: true` for integration tests in MRs.
 
+### 5. Package Lock File in .gitignore (GitHub Actions Specific)
+
+**Error**: `Dependencies lock file is not found in /home/runner/work/...`
+
+**Cause**: `package-lock.json` was in `.gitignore` but `npm ci` requires it for reproducible builds.
+
+**Solution**: Remove `package-lock.json` from `.gitignore` and commit the lock file:
+```bash
+# Remove from .gitignore
+sed -i '/package-lock.json/d' .gitignore
+
+# Generate and commit
+npm install
+git add package-lock.json
+git commit -m "chore: add package-lock.json for CI/CD"
+```
+
+**Note**: Lock files are essential for CI/CD to ensure consistent dependency versions.
+
+### 6. Missing npm Scripts
+
+**Error**: `Missing script: "test:unit:coverage"`
+
+**Cause**: Workflow references scripts that don't exist in `package.json`.
+
+**Solution**: Add required npm scripts to `package.json`:
+```json
+{
+  "scripts": {
+    "test:unit:coverage": "vscode-test --coverage",
+    "test:integration": "vscode-test"
+  }
+}
+```
+
+**Tip**: Always verify that workflow scripts match `package.json` before pushing.
+
+### 7. Xvfb Required for ALL VS Code Tests on Linux
+
+**Error**: `Missing X server or $DISPLAY` during `npm run test:unit:coverage`
+
+**Cause**: `vscode-test --coverage` launches VS Code, which requires a display even for unit tests.
+
+**Solution**: Wrap ALL vscode-test commands with `xvfb-run -a` on Linux:
+```yaml
+- name: Install Xvfb (Linux)
+  if: runner.os == 'Linux'
+  run: sudo apt-get update && sudo apt-get install -y xvfb libgtk-3-0
+
+- name: Unit tests with coverage (Linux)
+  if: runner.os == 'Linux'
+  run: xvfb-run -a npm run test:unit:coverage
+```
+
+**Critical**: Install Xvfb ONCE at the beginning, then reuse for all test steps.
+
+### 8. Marketplace Version Already Published
+
+**Error**: `GSejas.extension-name v1.0.7 already exists`
+
+**Cause**: Pushed release tag before bumping version in `package.json`.
+
+**Solution**: Always update version BEFORE tagging:
+```bash
+# 1. Update package.json version
+npm version patch --no-git-tag-version  # 1.0.7 → 1.0.8
+
+# 2. Update CHANGELOG.md
+# Add new ## [1.0.8] section
+
+# 3. Commit
+git add package.json CHANGELOG.md
+git commit -m "chore: bump version to 1.0.8"
+
+# 4. Tag and push
+git tag v1.0.8 -m "Release v1.0.8"
+git push && git push --tags
+```
+
+**Recovery**: If you already pushed the tag, delete and recreate:
+```bash
+git push origin :refs/tags/v1.0.8  # Delete remote
+git tag -d v1.0.8                   # Delete local
+# Update package.json, then recreate tag
+git tag v1.0.8
+git push origin v1.0.8
+```
+
+---
+
+## Lessons Learned (October 2025)
+
+### What Worked Well
+1. ✅ **Matrix testing** caught platform-specific issues immediately
+2. ✅ **Installing Xvfb once** reduced workflow complexity and execution time
+3. ✅ **`continue-on-error: true`** for integration tests prevented CI blocking on flaky tests
+4. ✅ **Codecov integration** provided instant coverage feedback
+5. ✅ **Package lock file** ensured reproducible builds across all runs
+
+### What Didn't Work
+1. ❌ **Missing lock file** caused immediate CI failure (blocked for 1 iteration)
+2. ❌ **Missing npm scripts** caused test step failures (blocked for 1 iteration)
+3. ❌ **Xvfb only for integration** caused unit coverage tests to crash (blocked for 1 iteration)
+4. ❌ **Version not bumped** caused marketplace publish to fail (blocked for 1 iteration)
+
+### Time to First Successful CI/CD
+- **Setup Time**: ~30 minutes (creating workflows, adding secrets)
+- **Debugging Iterations**: 4 failures before success
+- **Total Time to Green**: ~2 hours
+- **Lesson**: Test workflows incrementally, don't push all changes at once
+
+### Best Practices Discovered
+1. **Always install Xvfb before any VS Code test** - Even unit tests need it for coverage
+2. **Commit package-lock.json** - Essential for `npm ci` in GitHub Actions
+3. **Verify npm scripts exist** - Check `package.json` matches workflow references
+4. **Bump version before tagging** - Prevent marketplace publish conflicts
+5. **Test locally first** - Run `npm run test:unit:coverage` locally to catch errors early
+
 ---
 
 ## Release Workflow
