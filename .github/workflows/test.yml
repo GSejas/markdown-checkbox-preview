@@ -31,13 +31,23 @@ jobs:
 
       - run: npm ci
 
+      - name: Install Xvfb (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgtk-3-0
+
       - run: npm run check-types
 
       - run: npm run lint
 
       - run: npm run compile
 
-      - run: npm run test:unit:coverage
+      - name: Unit tests with coverage (Windows)
+        if: runner.os == 'Windows'
+        run: npm run test:unit:coverage
+
+      - name: Unit tests with coverage (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:unit:coverage
 
       - name: Integration tests (Windows)
         if: runner.os == 'Windows'
@@ -46,9 +56,7 @@ jobs:
 
       - name: Integration tests (Linux)
         if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update && sudo apt-get install -y xvfb
-          xvfb-run -a npm run test:integration
+        run: xvfb-run -a npm run test:integration
         continue-on-error: true
 
       - name: Upload coverage
