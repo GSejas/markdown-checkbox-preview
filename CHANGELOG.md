@@ -6,6 +6,37 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.0.8] - 2025-10-14
 
+### 🚀 **CI/CD & Infrastructure**
+
+- **GitHub Actions Workflows** 🔄
+  - Added comprehensive test workflow with Ubuntu and Windows matrix testing
+  - Automated release workflow triggered by version tags
+  - Proper Xvfb setup for VS Code tests on Linux environments
+  - Coverage reporting integration with Codecov
+  - Automated marketplace publishing with VSCE
+
+### 🐛 **Bug Fixes**
+
+- **Silent Auto-Preview** 🔕
+  - Removed notification popups when toggling auto-preview feature
+  - Auto-preview now operates silently for better user experience
+
+### 🛠️ **Enhanced**
+
+- **Test Infrastructure** ✅
+  - Fixed timeout issues in integration tests (increased to 10s)
+  - Optimized test execution with in-memory document handling
+  - All 110 tests passing reliably in CI/CD environment
+  - Added package-lock.json for dependency locking
+
+### 🎯 **Technical**
+
+- Added npm scripts: `test:unit:coverage`, `test:integration`
+- Configured Xvfb for headless VS Code testing on Linux
+- Implemented proper test timeouts and async handling
+
+## [1.0.7] - 2025-10-14
+
 ### ✨ **Added**
 
 - **Auto-Preview Toggle** 👁️
@@ -28,6 +59,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added `markdown-checkbox-preview.autoPreview` configuration setting (boolean, default: false)
 - Implemented `checkboxPreview.toggleAutoPreview` command with eye icon
 - Added panel tracking system to prevent duplicate previews
+```
 - Comprehensive unit test coverage (15 tests) for auto-preview functionality
 - Enhanced extension.ts with modular auto-preview integration
 
