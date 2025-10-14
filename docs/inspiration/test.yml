@@ -1,0 +1,159 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main, develop ]
+
+env:
+  VSCODE_TEST_VERSION: 1.103.0
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false  # Don't cancel other jobs on first failure
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [20.x]  # Node 20+ only - modern ESM support and VS Code 1.103+ baseline
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Cache VS Code test and node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.vscode-test
+            node_modules
+          key: ${{ runner.os }}-vscode-${{ env.VSCODE_TEST_VERSION }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify mermaid CLI installation
+        run: npx mmdc --version
+        continue-on-error: true
+
+      - name: TypeScript compilation check
+        run: npm run check-types
+        continue-on-error: false
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true  # Don't fail build on lint warnings
+
+      - name: Build extension (compile source for integration tests)
+        run: npm run compile
+
+      - name: Run unit tests with coverage
+        run: npm run test:unit:coverage
+        continue-on-error: false
+
+      - name: Run integration tests with coverage (Windows only)
+        run: npm run test:integration:coverage
+        if: runner.os == 'Windows'
+        continue-on-error: true  # Don't fail if E2E tests have issues
+
+      - name: Merge coverage reports (Windows only)
+        run: npm run coverage:merge
+        if: runner.os == 'Windows'
+        continue-on-error: true  # Don't fail if merge has issues
+
+      - name: Upload unit coverage to Codecov (Linux)
+        uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20.x'
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unit
+          name: codecov-unit-${{ matrix.os }}
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload merged coverage to Codecov (Windows)
+        uses: codecov/codecov-action@v4
+        if: runner.os == 'Windows' && matrix.node-version == '20.x'
+        with:
+          files: ./coverage-merged/lcov.info
+          flags: merged
+          name: codecov-merged-windows
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}-node-${{ matrix.node-version }}
+          path: |
+            coverage/
+            coverage-e2e/
+            coverage-merged/
+            test-results/
+          retention-days: 7
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint with annotations
+        run: npm run lint
+        continue-on-error: false  # Fail on lint errors in dedicated job
+      
+      - name: Check TypeScript errors
+        run: npm run check-types
+
+  build:
+    name: Build VSIX Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Compile TypeScript
+        run: npm run compile
+      
+      - name: Package extension
+        run: npm run package
+      
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-package
+          path: '*.vsix'
+          retention-days: 30

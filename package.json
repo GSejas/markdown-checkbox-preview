@@ -46,6 +46,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable CodeLens for markdown checkboxes"
+        },
+        "markdown-checkbox-preview.autoPreview": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically open preview panel when opening markdown files"
         }
       }
     },
@@ -54,6 +59,11 @@
         "command": "checkboxPreview.open",
         "title": "Open Interactive Checkbox Preview",
         "icon": "$(preview)"
+      },
+      {
+        "command": "checkboxPreview.toggleAutoPreview",
+        "title": "Toggle Auto-Preview",
+        "icon": "$(eye)"
       },
       {
         "command": "checkboxTree.refresh",

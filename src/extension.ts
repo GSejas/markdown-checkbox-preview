@@ -3,6 +3,7 @@ import { renderMarkdown, getTaskListCount } from './renderer';
 import { CheckboxTreeDataProvider, CheckboxItem } from './checkboxTree';
 import { CheckboxCodeLensProvider } from './providers/checkboxCodeLensProvider';
 import { CheckboxHoverProvider } from './providers/checkboxHoverProvider';
+import { AutoPreviewManager } from './autoPreviewManager';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Markdown Checkbox Preview extension is now active!');
@@ -30,10 +31,22 @@ export function activate(context: vscode.ExtensionContext) {
     hoverProvider
   );
 
+  // Initialize auto-preview manager with callback to open preview
+  // When auto-preview triggers opening we call with { silent: true }
+  const autoPreviewManager = new AutoPreviewManager(
+    context,
+    () => openCheckboxPreview(context, treeDataProvider, autoPreviewManager, { silent: true })
+  );
+
   // Register commands
   const openPreviewDisposable = vscode.commands.registerCommand('checkboxPreview.open', () => {
-    openCheckboxPreview(context, treeDataProvider);
+    openCheckboxPreview(context, treeDataProvider, autoPreviewManager);
   });
+
+  const toggleAutoPreviewDisposable = vscode.commands.registerCommand(
+    'checkboxPreview.toggleAutoPreview',
+    () => autoPreviewManager.toggleAutoPreview()
+  );
 
   const refreshTreeDisposable = vscode.commands.registerCommand('checkboxTree.refresh', () => {
     treeDataProvider.refresh();
@@ -94,6 +107,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     openPreviewDisposable,
+    toggleAutoPreviewDisposable,
     refreshTreeDisposable,
     toggleCheckboxDisposable,
     navigateToHeaderDisposable,
@@ -102,11 +116,27 @@ export function activate(context: vscode.ExtensionContext) {
     treeView,
     statusBarItem,
     codeLensDisposable,
-    hoverDisposable
+    hoverDisposable,
+    autoPreviewManager
   );
+
+  // Show auto-preview button if markdown file is already open
+  autoPreviewManager.show();
 }
 
-function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?: CheckboxTreeDataProvider) {
+/**
+ * Opens the interactive checkbox preview panel
+ * 
+ * @param {vscode.ExtensionContext} context - Extension context
+ * @param {CheckboxTreeDataProvider} [treeDataProvider] - Optional tree data provider for updates
+ * @param {AutoPreviewManager} [autoPreviewManager] - Optional auto-preview manager for tracking
+ */
+function openCheckboxPreview(
+  context: vscode.ExtensionContext, 
+  treeDataProvider?: CheckboxTreeDataProvider,
+  autoPreviewManager?: AutoPreviewManager,
+  options?: { silent?: boolean }
+) {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor || editor.document.languageId !== 'markdown') {
@@ -116,6 +146,14 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
 
   const document = editor.document;
   const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
+
+  // Check if panel already exists for this document (via auto-preview manager)
+  if (autoPreviewManager?.hasPanel(document.uri)) {
+    if (!options?.silent) {
+      vscode.window.showInformationMessage('Preview is already open for this file.');
+    }
+    return;
+  }
 
   // Create the webview panel
   const panel = vscode.window.createWebviewPanel(
@@ -133,6 +171,11 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
 
   // Set the initial HTML content
   panel.webview.html = getWebviewContent(panel.webview, context, document.getText());
+
+  // Register panel with auto-preview manager to prevent duplicates
+  if (autoPreviewManager) {
+    autoPreviewManager.registerPanel(panel, document.uri);
+  }
 
   // Handle document changes
   const changeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
@@ -174,11 +217,18 @@ function openCheckboxPreview(context: vscode.ExtensionContext, treeDataProvider?
   // Clean up when panel is disposed
   panel.onDidDispose(() => {
     changeDisposable.dispose();
+    // Auto-preview manager automatically unregisters via its own onDidDispose handler
   });
 
   context.subscriptions.push(changeDisposable);
 }
 
+/**
+ * Toggles a checkbox at the specified line number
+ * 
+ * @param {vscode.TextEditor} editor - The text editor containing the checkbox
+ * @param {number} lineNumber - The line number of the checkbox (0-indexed)
+ */
 function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   const document = editor.document;
 

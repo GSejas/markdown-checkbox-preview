@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on version tags like v1.0.7, v2.1.0, etc.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Required to create releases
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for changelog generation
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Xvfb (for integration tests)
+        run: sudo apt-get install -y xvfb
+
+      - name: Run tests
+        run: xvfb-run -a npm test
+
+      - name: Build VSIX package
+        run: |
+          npm run package
+          npx @vscode/vsce package
+          VSIX_FILE=$(ls *.vsix | head -n 1)
+          echo "VSIX_PATH=$VSIX_FILE" >> $GITHUB_ENV
+          echo "VSIX_NAME=$(basename $VSIX_FILE)" >> $GITHUB_ENV
+          echo "Found VSIX: $VSIX_FILE"
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          # Extract the section for this version from CHANGELOG.md
+          CHANGELOG=$(awk "/^## \[$VERSION\]/,/^## \[/" CHANGELOG.md | sed '$d')
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md) for details."
+          fi
+          # Save to file to handle multi-line content
+          echo "$CHANGELOG" > release-notes.md
+          echo "Changelog extracted for version $VERSION"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release v${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          files: ${{ env.VSIX_PATH }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true  # Auto-generate notes from commits
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-package
+          path: ${{ env.VSIX_PATH }}
+          retention-days: 90
+
+  # Optional: Publish to VS Code Marketplace
+  # Uncomment when you have a Personal Access Token set up
+  publish-marketplace:
+    needs: release
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Publish to VS Code Marketplace
+        run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

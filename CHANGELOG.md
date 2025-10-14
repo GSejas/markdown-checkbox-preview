@@ -4,6 +4,33 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.8] - 2025-10-14
+
+### ✨ **Added**
+
+- **Auto-Preview Toggle** 👁️
+  - Added status bar button to automatically open preview when markdown files are opened
+  - Right-aligned status bar button with eye and checkbox icons indicating auto-preview state
+  - Visual feedback: $(eye) $(check) when enabled, $(eye-closed) $(x) when disabled
+  - Persistent configuration across VS Code sessions
+  - Smart panel management prevents duplicate preview windows
+
+### 🛠️ **Enhanced**
+
+- **Architecture Improvements** 🏗️
+  - Implemented `AutoPreviewManager` class following SOLID principles
+  - Clean separation of concerns with dependency injection pattern
+  - Comprehensive event handling for editor and configuration changes
+  - Proper resource management with automatic cleanup
+
+### 🎯 **Technical**
+
+- Added `markdown-checkbox-preview.autoPreview` configuration setting (boolean, default: false)
+- Implemented `checkboxPreview.toggleAutoPreview` command with eye icon
+- Added panel tracking system to prevent duplicate previews
+- Comprehensive unit test coverage (15 tests) for auto-preview functionality
+- Enhanced extension.ts with modular auto-preview integration
+
 ## [1.0.7] - 2025-09-02
 
 ### 🔧 **Fixed**

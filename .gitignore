@@ -71,3 +71,4 @@ package-lock.json
 # Temporary files
 .tmp/
 temp/
+test-results/

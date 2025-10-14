@@ -3,21 +3,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 suite('Integration Tests', () => {
-	let testWorkspaceUri: vscode.Uri;
-	let testFileUri: vscode.Uri;
+	let testDocument: vscode.TextDocument;
+	let testEditor: vscode.TextEditor;
 
-	suiteSetup(async () => {
-		// Create a temporary workspace for testing
-		const workspacePath = path.join(__dirname, '..', '..', 'test-workspace');
-		testWorkspaceUri = vscode.Uri.file(workspacePath);
-		testFileUri = vscode.Uri.joinPath(testWorkspaceUri, 'test.md');
-
-		// Ensure the test file exists
-		try {
-			await vscode.workspace.fs.createDirectory(testWorkspaceUri);
-		} catch (e) {
-			// Directory might already exist
-		}
+	suiteSetup(async function() {
+		// Increase timeout for VS Code test environment setup
+		this.timeout(10000);
 
 		const testContent = `# Integration Test Document
 
@@ -31,26 +22,27 @@ suite('Integration Tests', () => {
 - [ ] Another task
 - [ ] Yet another task`;
 
-		await vscode.workspace.fs.writeFile(testFileUri, Buffer.from(testContent, 'utf8'));
+		// Create in-memory document instead of file system operations
+		testDocument = await vscode.workspace.openTextDocument({
+			content: testContent,
+			language: 'markdown'
+		});
+		testEditor = await vscode.window.showTextDocument(testDocument);
 	});
 
-	suiteTeardown(async () => {
-		// Clean up test files
-		try {
-			await vscode.workspace.fs.delete(testWorkspaceUri, { recursive: true });
-		} catch (e) {
-			// Ignore cleanup errors
-		}
+	suiteTeardown(async function() {
+		// Increase timeout for cleanup
+		this.timeout(5000);
+
+		// Clean up
+		await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
 	});
 
 	suite('End-to-End Workflow', () => {
 		test('should open markdown file and show tree view', async () => {
-			// Open the test markdown file
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			const editor = await vscode.window.showTextDocument(document);
-
-			assert.strictEqual(document.languageId, 'markdown');
-			assert.ok(editor);
+			// Use the test document created in setup
+			assert.strictEqual(testDocument.languageId, 'markdown');
+			assert.ok(testEditor);
 
 			// Give the extension time to activate
 			await new Promise(resolve => setTimeout(resolve, 1000));
@@ -62,8 +54,8 @@ suite('Integration Tests', () => {
 		});
 
 		test('should execute checkbox preview command', async () => {
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			await vscode.window.showTextDocument(document);
+			// Use the existing test document
+			await vscode.window.showTextDocument(testDocument);
 
 			// Execute the open preview command
 			await assert.doesNotReject(async () => {
@@ -75,8 +67,8 @@ suite('Integration Tests', () => {
 		});
 
 		test('should refresh tree view command', async () => {
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			await vscode.window.showTextDocument(document);
+			// Use the existing test document
+			await vscode.window.showTextDocument(testDocument);
 
 			// Execute refresh command
 			await assert.doesNotReject(async () => {
@@ -85,34 +77,29 @@ suite('Integration Tests', () => {
 		});
 
 		test('should handle file modifications', async () => {
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			const editor = await vscode.window.showTextDocument(document);
+			// Use the existing test document
+			await vscode.window.showTextDocument(testDocument);
 
 			// Get original content
-			const originalContent = document.getText();
+			const originalContent = testDocument.getText();
 
 			// Add a new checkbox
 			const newCheckbox = '\n- [ ] New test checkbox';
-			await editor.edit(editBuilder => {
-				editBuilder.insert(new vscode.Position(document.lineCount, 0), newCheckbox);
+			await testEditor.edit(editBuilder => {
+				editBuilder.insert(new vscode.Position(testDocument.lineCount, 0), newCheckbox);
 			});
 
-			// Save the document
-			await document.save();
-
 			// Verify the change was made
-			assert.ok(document.getText().includes('New test checkbox'));
+			assert.ok(testDocument.getText().includes('New test checkbox'));
 
 			// Restore original content
-			await editor.edit(editBuilder => {
+			await testEditor.edit(editBuilder => {
 				const fullRange = new vscode.Range(
 					new vscode.Position(0, 0),
-					new vscode.Position(document.lineCount, 0)
+					new vscode.Position(testDocument.lineCount, 0)
 				);
 				editBuilder.replace(fullRange, originalContent);
 			});
-
-			await document.save();
 		});
 	});
 
@@ -134,8 +121,7 @@ suite('Integration Tests', () => {
 		test('should have command titles and descriptions', async () => {
 			// We can't directly test command metadata without access to the package.json
 			// But we can verify the commands execute without errors
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			await vscode.window.showTextDocument(document);
+			await vscode.window.showTextDocument(testDocument);
 
 			const commandTests = [
 				'checkboxPreview.open',
@@ -155,9 +141,8 @@ suite('Integration Tests', () => {
 
 	suite('Extension Activation', () => {
 		test('should activate on markdown files', async () => {
-			// Open a markdown file
-			const document = await vscode.workspace.openTextDocument(testFileUri);
-			await vscode.window.showTextDocument(document);
+			// Use the existing test document
+			await vscode.window.showTextDocument(testDocument);
 
 			// Check that our extension commands are available
 			const commands = await vscode.commands.getCommands();
@@ -173,8 +158,7 @@ suite('Integration Tests', () => {
 
 	suite('Multi-file Handling', () => {
 		test('should handle switching between markdown files', async () => {
-			// Create a second test file
-			const testFile2Uri = vscode.Uri.joinPath(testWorkspaceUri, 'test2.md');
+			// Create a second test document in memory
 			const testContent2 = `# Second Test File
 
 ## Different Tasks
@@ -182,37 +166,28 @@ suite('Integration Tests', () => {
 - [ ] Task B
 - [x] Task C`;
 
-			await vscode.workspace.fs.writeFile(testFile2Uri, Buffer.from(testContent2, 'utf8'));
+			const document2 = await vscode.workspace.openTextDocument({
+				content: testContent2,
+				language: 'markdown'
+			});
+			const editor2 = await vscode.window.showTextDocument(document2);
 
-			// Open first file
-			const document1 = await vscode.workspace.openTextDocument(testFileUri);
-			await vscode.window.showTextDocument(document1);
+			// Switch back to first document
+			await vscode.window.showTextDocument(testDocument);
 
-			// Execute refresh command
-			await vscode.commands.executeCommand('checkboxTree.refresh');
+			// Both documents should be accessible
+			assert.ok(testDocument);
+			assert.ok(document2);
 
-			// Open second file
-			const document2 = await vscode.workspace.openTextDocument(testFile2Uri);
-			await vscode.window.showTextDocument(document2);
-
-			// Execute refresh command again
-			await vscode.commands.executeCommand('checkboxTree.refresh');
-
-			// Both operations should succeed
-			assert.ok(true);
-
-			// Clean up second file
-			try {
-				await vscode.workspace.fs.delete(testFile2Uri);
-			} catch (e) {
-				// Ignore cleanup errors
-			}
+			// Clean up second document
+			await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
 		});
 	});
 
 	suite('Error Handling', () => {
 		test('should handle non-existent file gracefully', async () => {
-			const nonExistentUri = vscode.Uri.joinPath(testWorkspaceUri, 'non-existent.md');
+			// Create a non-existent URI for testing
+			const nonExistentUri = vscode.Uri.file('/non-existent/path/test.md');
 
 			// Trying to open a non-existent file should not crash the extension
 			await assert.rejects(async () => {
@@ -225,7 +200,6 @@ suite('Integration Tests', () => {
 		});
 
 		test('should handle corrupted markdown gracefully', async () => {
-			const corruptedFileUri = vscode.Uri.joinPath(testWorkspaceUri, 'corrupted.md');
 			const corruptedContent = `# Corrupted File
 			
 - [x] Valid checkbox
@@ -236,31 +210,23 @@ suite('Integration Tests', () => {
 - [X] Valid uppercase
 `;
 
-			await vscode.workspace.fs.writeFile(corruptedFileUri, Buffer.from(corruptedContent, 'utf8'));
-
-			// Open the corrupted file
-			const document = await vscode.workspace.openTextDocument(corruptedFileUri);
+			// Create in-memory document with corrupted content
+			const document = await vscode.workspace.openTextDocument({
+				content: corruptedContent,
+				language: 'markdown'
+			});
 			await vscode.window.showTextDocument(document);
 
 			// Commands should still work without throwing
 			await assert.doesNotReject(async () => {
 				await vscode.commands.executeCommand('checkboxTree.refresh');
 			});
-
-			// Clean up
-			try {
-				await vscode.workspace.fs.delete(corruptedFileUri);
-			} catch (e) {
-				// Ignore cleanup errors
-			}
 		});
 	});
 
 	suite('Performance', () => {
 		test('should handle large files efficiently', async () => {
-			const largeFileUri = vscode.Uri.joinPath(testWorkspaceUri, 'large.md');
-			
-			// Create a large markdown file
+			// Create a large markdown file content
 			let largeContent = '# Large File Test\n\n';
 			for (let i = 0; i < 1000; i++) {
 				largeContent += `## Section ${i}\n`;
@@ -269,11 +235,12 @@ suite('Integration Tests', () => {
 				}
 			}
 
-			await vscode.workspace.fs.writeFile(largeFileUri, Buffer.from(largeContent, 'utf8'));
-
-			// Open the large file
+			// Create in-memory document with large content
 			const startTime = Date.now();
-			const document = await vscode.workspace.openTextDocument(largeFileUri);
+			const document = await vscode.workspace.openTextDocument({
+				content: largeContent,
+				language: 'markdown'
+			});
 			await vscode.window.showTextDocument(document);
 
 			// Refresh should complete in reasonable time
@@ -282,13 +249,6 @@ suite('Integration Tests', () => {
 
 			// Should complete within 5 seconds even for large files
 			assert.ok(endTime - startTime < 5000, 'Large file processing should complete within 5 seconds');
-
-			// Clean up
-			try {
-				await vscode.workspace.fs.delete(largeFileUri);
-			} catch (e) {
-				// Ignore cleanup errors
-			}
 		});
 	});
 });

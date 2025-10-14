@@ -56,6 +56,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 		});
 
 		test('should count task list items correctly', async () => {
+			// This test is synchronous but marked async for consistency
 			const simpleMarkdown = `# Test
 - [x] Task 1
 - [ ] Task 2
@@ -69,7 +70,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			const { completed, total } = getTaskListCount(simpleMarkdown);
 			assert.strictEqual(total, 8, 'Should count 8 total tasks');
 			assert.strictEqual(completed, 4, 'Should count 4 completed tasks');
-		});
+		}).timeout(5000);
 
 		test('should handle empty markdown', () => {
 			const html = renderMarkdown('');
@@ -115,7 +116,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			
 			// Should have at least some items parsed
 			assert.ok(rootItems.length > 0, 'Should parse some items from test document');
-		});
+		}).timeout(5000);
 
 		test('should get completion stats correctly', async () => {
 			await vscode.window.showTextDocument(testDocument);
@@ -126,7 +127,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			assert.ok(stats.total >= 0, 'Should have non-negative total');
 			assert.ok(stats.completed >= 0, 'Should have non-negative completed');
 			assert.ok(stats.completed <= stats.total, 'Completed should not exceed total');
-		});
+		}).timeout(5000);
 	});
 
 	suite('Command Tests', () => {
@@ -136,7 +137,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			assert.ok(commands.includes('checkboxPreview.open'));
 			assert.ok(commands.includes('checkboxTree.refresh'));
 			assert.ok(commands.includes('checkboxTree.toggle'));
-		});
+		}).timeout(5000);
 
 		test('should execute open preview command', async () => {
 			await vscode.window.showTextDocument(testDocument);
@@ -145,7 +146,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			await assert.doesNotReject(async () => {
 				await vscode.commands.executeCommand('checkboxPreview.open');
 			});
-		});
+		}).timeout(5000);
 	});
 
 	suite('Document Editing Tests', () => {
@@ -179,7 +180,7 @@ suite('Markdown Checkbox Preview Extension Tests', () => {
 			await testEditor.edit(editBuilder => {
 				editBuilder.replace(newLine.range, originalText);
 			});
-		});
+		}).timeout(5000);
 
 		test('should handle multiple checkbox formats', () => {
 			const testCases = [

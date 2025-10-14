@@ -1,0 +1,60 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.vscode-test
+            node_modules
+          key: ${{ runner.os }}-vscode-node-${{ hashFiles('**/package-lock.json') }}
+
+      - run: npm ci
+
+      - run: npm run check-types
+
+      - run: npm run lint
+
+      - run: npm run compile
+
+      - run: npm run test:unit:coverage
+
+      - name: Integration tests (Windows)
+        if: runner.os == 'Windows'
+        run: npm run test:integration
+        continue-on-error: true
+
+      - name: Integration tests (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt-get install -y xvfb
+          xvfb-run -a npm run test:integration
+        continue-on-error: true
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/coverage-final.json
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -15,6 +15,7 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
 - **Hover information** - Hover over checkboxes to see status, content, and quick toggle actions
 - **CodeLens integration** - See toggle buttons directly above checkbox lines in the editor
 - **Smart navigation** - Click headers in preview or tree to jump to source locations
+- **Auto-preview toggle** - Automatically open preview when markdown files are opened (status bar button)
 
 ![Hover over support](media\codelness-demo.gif)
 
@@ -56,6 +57,20 @@ A VS Code extension that provides an interactive preview for Markdown checkboxes
    - Toggle buttons with visual icons
    - One-click checkbox state changes
    - Seamless integration with VS Code's editor
+
+### Auto-Preview Toggle
+
+1. **Enable auto-preview** using the status bar button (right side of status bar)
+   - Click the eye icon to toggle auto-preview on/off
+   - $(eye) $(check) indicates auto-preview is enabled
+   - $(eye-closed) $(x) indicates auto-preview is disabled
+
+2. **Automatic behavior** when enabled:
+   - Preview automatically opens when you open markdown files
+   - Smart panel management prevents duplicate preview windows
+   - Configuration persists across VS Code sessions
+
+3. **Manual override** - You can still manually open previews anytime using the Command Palette
 
 ## Supported Syntax
 
