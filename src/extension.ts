@@ -175,7 +175,13 @@ function openCheckboxPreview(
 
   Logger.info(`Created preview panel for ${document.uri.toString()} in column two`);
 
+  let isWebviewReady = false;
   const sendMessage = (message: { type: string; [key: string]: unknown }) => {
+    if (!panel.visible && message.type !== 'rerender') {
+      Logger.debug(`Skipping message type ${message.type}; panel not visible`);
+      return;
+    }
+
     panel.webview.postMessage(message).then(sent => {
       if (!sent) {
         Logger.warn(`Webview message of type ${message.type} was not delivered`);
@@ -188,35 +194,51 @@ function openCheckboxPreview(
   // Set the initial HTML content
   panel.webview.html = getWebviewContent(panel.webview, context, document.getText());
   Logger.debug(`Initial preview content rendered for ${document.uri.toString()}`);
+  
+  // Mark webview as ready after short delay to ensure initialization
+  setTimeout(() => {
+    isWebviewReady = true;
+    Logger.debug(`Webview ready for ${document.uri.toString()}`);
+  }, 100);
 
   // Register panel with auto-preview manager to prevent duplicates
   if (autoPreviewManager) {
     autoPreviewManager.registerPanel(panel, document.uri);
   }
 
-  // Handle document changes
+  // Handle document changes with debouncing to avoid flooding webview
+  let updateTimeout: NodeJS.Timeout | undefined;
   const changeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
     if (event.document.uri.toString() === document.uri.toString()) {
       Logger.debug(`Document change detected for ${document.uri.toString()} (${event.contentChanges.length} change(s))`);
-      const newContent = event.document.getText();
-      const html = renderMarkdown(newContent);
-      const stats = getTaskListCount(newContent);
-
-      sendMessage({
-        type: 'rerender',
-        html: html
-      });
-
-      sendMessage({
-        type: 'updateProgress',
-        completed: stats.completed,
-        total: stats.total
-      });
-
-      // Refresh tree view if available
-      if (treeDataProvider) {
-        treeDataProvider.refresh();
+      
+      // Clear existing timeout
+      if (updateTimeout) {
+        clearTimeout(updateTimeout);
       }
+
+      // Debounce updates by 150ms to batch rapid changes
+      updateTimeout = setTimeout(() => {
+        const newContent = event.document.getText();
+        const html = renderMarkdown(newContent);
+        const stats = getTaskListCount(newContent);
+
+        sendMessage({
+          type: 'rerender',
+          html: html
+        });
+
+        sendMessage({
+          type: 'updateProgress',
+          completed: stats.completed,
+          total: stats.total
+        });
+
+        // Refresh tree view if available
+        if (treeDataProvider) {
+          treeDataProvider.refresh();
+        }
+      }, 150);
     }
   });
 
@@ -237,6 +259,9 @@ function openCheckboxPreview(
 
   // Clean up when panel is disposed
   panel.onDidDispose(() => {
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
     changeDisposable.dispose();
     Logger.debug(`Disposed preview panel for ${document.uri.toString()}`);
     // Auto-preview manager automatically unregisters via its own onDidDispose handler
