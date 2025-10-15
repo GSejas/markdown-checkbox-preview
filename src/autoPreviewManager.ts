@@ -289,6 +289,21 @@ export class AutoPreviewManager {
   }
 
   /**
+   * Returns the currently-registered document URI for the preview panel, if any
+   */
+  public getCurrentDocumentUri(): vscode.Uri | undefined {
+    if (!this.currentDocumentUri) {
+      return undefined;
+    }
+    try {
+      return vscode.Uri.parse(this.currentDocumentUri);
+    } catch (err) {
+      Logger.error('Failed to parse currentDocumentUri', err);
+      return undefined;
+    }
+  }
+
+  /**
    * Shows the status bar button if a markdown file is active
    * 
    * @public

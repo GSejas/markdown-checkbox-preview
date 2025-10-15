@@ -4,6 +4,49 @@ All notable changes to the "markdown-checkbox-preview" extension will be documen
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.9] - 2025-10-15
+
+### 🐛 **Bug Fixes**
+
+- **Checkbox Toggle Sync** 🔄
+  - Fixed critical bug where checkbox toggles in webview preview were not persisting to markdown files
+  - Implemented controlled state pattern with optimistic UI for instant visual feedback
+  - Fixed stale editor reference issue by using URI-based editing via WorkspaceEdit API
+  - Added targeted checkbox synchronization to prevent visual glitches from full HTML rerenders
+
+- **Scanner Improvements** 🔍
+  - Fixed false positive checkbox detection in fenced code blocks (Mermaid diagrams, etc.)
+  - Added support for nested checkboxes and ordered list checkboxes (`1. [ ] Task`)
+  - Added case-insensitive checkbox detection (`[x]` and `[X]` both supported)
+  - Improved CRLF line ending compatibility
+
+### ✨ **Added**
+
+- **Debug Toggle Command** 🐛
+  - Added `checkboxPreview.toggleDebug` command to enable/disable verbose logging
+  - Debug logs now opt-in via command, reducing console noise by default
+  - Verbose logs written to "Markdown Checkbox Preview" output channel
+
+- **Comprehensive Test Suite** ✅
+  - Added 17 unit tests for checkbox scanner (fenced blocks, nested items, various formats)
+  - Added 11 unit tests for URI-based toggle function edge cases
+  - Added 6 integration tests for end-to-end webview toggle flow
+  - Total: 34 new tests added (144+ tests total)
+
+### 🛠️ **Enhanced**
+
+- **Logging Infrastructure** 📝
+  - Migrated all `console.log()` statements to centralized Logger class
+  - Added debug verbosity toggle for cleaner extension host console
+  - Improved diagnostic capabilities with structured logging (INFO/WARN/ERROR/DEBUG)
+
+### 🎯 **Technical**
+
+- Exported `toggleCheckboxInDocumentUri()` function for testability
+- Added `getCurrentDocumentUri()` getter to AutoPreviewManager
+- Implemented `extractCheckboxStates()` helper for state verification
+- Enhanced fenced code block detection with state tracking
+
 ## [1.0.8] - 2025-10-14
 
 ### 🚀 **CI/CD & Infrastructure**

@@ -1,6 +1,21 @@
 import MarkdownIt from 'markdown-it';
 
+/**
+ * Renders a Markdown string into an HTML string with custom enhancements.
+ *
+ * This function uses `markdown-it` to parse and render the Markdown text. It includes several custom rules to add interactivity and metadata to the output HTML:
+ *
+ * 1.  **Clickable Headers**: It identifies headers (e.g., `# Header`) and adds attributes (`id`, `data-line`, `class`, `style`, `title`) to make them clickable. Clicking a header is intended to navigate the user to the corresponding line in the source editor.
+ *
+ * 2.  **Task List Items**: It parses GitHub-style task list items (e.g., `- [ ] task` or `- [x] task`). It converts them into HTML labels containing a checkbox and the task text. The checkbox is given a `data-line` attribute to link it back to its source line, enabling interactive toggling.
+ *
+ * 3.  **Line Numbering for Scroll Sync**: It adds a `data-source-line` attribute to all block-level elements. This is used to synchronize the scroll position of the rendered preview with the source editor.
+ *
+ * @param text - The Markdown string to be rendered.
+ * @returns The rendered HTML string with the custom enhancements.
+ */
 export function renderMarkdown(text: string): string {
+
   const md = new MarkdownIt({ 
     html: false,
     linkify: true,
@@ -91,6 +106,7 @@ export function renderMarkdown(text: string): string {
   return md.render(text);
 }
 
+
 export function getTaskListCount(text: string): { total: number; completed: number } {
   const lines = text.split('\n');
   let total = 0;
@@ -107,4 +123,28 @@ export function getTaskListCount(text: string): { total: number; completed: numb
   }
   
   return { total, completed };
+}
+
+/**
+ * Extracts checkbox states from markdown text
+ * Returns array of {line: number, checked: boolean}
+ */
+export function extractCheckboxStates(text: string): Array<{ line: number; checked: boolean }> {
+  const lines = text.split('\n');
+  const checkboxes: Array<{ line: number; checked: boolean }> = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const checkedMatch = line.match(/^[-*+]\s*\[x\]/i);
+    const uncheckedMatch = line.match(/^[-*+]\s*\[\s\]/i);
+    
+    if (checkedMatch || uncheckedMatch) {
+      checkboxes.push({
+        line: i,
+        checked: !!checkedMatch
+      });
+    }
+  }
+  
+  return checkboxes;
 }

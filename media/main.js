@@ -12,6 +12,10 @@
           rootElement.innerHTML = message.html;
         }
         break;
+      case 'syncCheckboxes':
+        // Sync checkbox states without full rerender (preserves scroll, focus, etc.)
+        syncCheckboxStates(message.checkboxes);
+        break;
       case 'updateProgress':
         updateProgressBar(message.completed, message.total);
         break;
@@ -20,6 +24,16 @@
         break;
     }
   });
+
+  // Sync checkbox states from the editor
+  function syncCheckboxStates(checkboxes) {
+    checkboxes.forEach(({ line, checked }) => {
+      const checkbox = document.querySelector(`input.md-checkbox[data-line="${line}"]`);
+      if (checkbox && checkbox.checked !== checked) {
+        checkbox.checked = checked;
+      }
+    });
+  }
 
   // Synchronized scrolling: scroll preview to match editor line
   function scrollToLine(line) {
@@ -60,17 +74,14 @@
     if (target.tagName === 'INPUT' && target.classList.contains('md-checkbox')) {
       const lineNumber = parseInt(target.dataset.line, 10);
       if (!isNaN(lineNumber)) {
+        // Allow the checkbox to change immediately (optimistic UI)
+        // The extension will send back a sync message to confirm the state
+        
         // Send toggle message to extension
         vscode.postMessage({
           type: 'toggle',
           line: lineNumber
         });
-        
-        // Disable the checkbox temporarily to prevent rapid clicking
-        target.disabled = true;
-        setTimeout(() => {
-          target.disabled = false;
-        }, 100);
       }
     }
     

@@ -2,7 +2,7 @@
   "name": "markdown-checkbox-preview",
   "displayName": "Markdown Checkbox Preview",
   "description": "Interactive Markdown checkbox codelens actions (toggle) support, preview with real-time sync, tree view navigation, and comprehensive task management for VS Code",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "publisher": "GSejas",
   "license": "MIT",
   "icon": "media/icon.png",
@@ -64,6 +64,11 @@
         "command": "checkboxPreview.toggleAutoPreview",
         "title": "Toggle Auto-Preview",
         "icon": "$(eye)"
+      },
+      {
+        "command": "checkboxPreview.toggleDebug",
+        "title": "Toggle Debug Logging",
+        "icon": "$(bug)"
       },
       {
         "command": "checkboxTree.refresh",

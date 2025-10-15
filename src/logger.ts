@@ -7,6 +7,8 @@ type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
  */
 export class Logger {
   private static channel: vscode.OutputChannel | undefined;
+  private static verboseEnabled: boolean = false;
+
   private static get output(): vscode.OutputChannel {
     if (!Logger.channel) {
       Logger.channel = vscode.window.createOutputChannel('Markdown Checkbox Preview');
@@ -33,6 +35,30 @@ export class Logger {
   }
 
   public static debug(message: string): void {
-    Logger.write('DEBUG', message);
+    if (Logger.verboseEnabled) {
+      Logger.write('DEBUG', message);
+    }
+  }
+
+  /**
+   * Enable or disable verbose debug logging
+   */
+  public static setVerbose(enabled: boolean): void {
+    Logger.verboseEnabled = enabled;
+    Logger.info(`Verbose logging ${enabled ? 'enabled' : 'disabled'}`);
+  }
+
+  /**
+   * Check if verbose logging is enabled
+   */
+  public static isVerbose(): boolean {
+    return Logger.verboseEnabled;
+  }
+
+  /**
+   * Show the output channel
+   */
+  public static show(): void {
+    Logger.output.show();
   }
 }

@@ -7,6 +7,7 @@
  */
 
 import * as vscode from 'vscode';
+import { Logger } from '../logger';
 
 interface CheckboxItem {
   content: string;
@@ -54,12 +55,12 @@ export class CheckboxCodeLensProvider implements vscode.CodeLensProvider {
       return [];
     }
 
-    console.log('[markdown-checkbox-preview] Providing CodeLenses for:', document.fileName);
+    Logger.debug(`[CodeLens] Providing for ${document.fileName}`);
 
     const codeLenses: vscode.CodeLens[] = [];
     const checkboxItems = this.findCheckboxItems(document);
     
-    console.log(`[markdown-checkbox-preview] Found ${checkboxItems.length} checkboxes in ${document.fileName}`);
+    Logger.debug(`[CodeLens] Found ${checkboxItems.length} checkboxes in ${document.fileName}`);
 
     for (const checkbox of checkboxItems) {
       // Create toggle command
@@ -91,25 +92,48 @@ export class CheckboxCodeLensProvider implements vscode.CodeLensProvider {
   private findCheckboxItems(document: vscode.TextDocument): CheckboxItem[] {
     const items: CheckboxItem[] = [];
     const text = document.getText();
-    const lines = text.split('\n');
+    const lines = text.split(/\r?\n/);
 
-    console.log(`[markdown-checkbox-preview] Scanning ${lines.length} lines for checkboxes`);
+    Logger.debug(`[CodeLens] Scanning ${lines.length} lines for checkboxes`);
+
+    // Regex: allow leading whitespace (nested items), match -, *, + or numbered lists,
+    // then a checkbox [ ] or [x] (case-insensitive). Capture the rest of the content.
+    const checkboxRe = /^\s*(?:[-*+]|\d+\.)\s+\[(?: |x|X)\]\s*(.*)$/;
+
+    // We'll skip fenced code blocks (```), so we don't misinterpret diagram tokens like A[Node]
+    let inFencedBlock = false;
+    let fenceInfo = '';
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      
-      // More flexible regex to catch various checkbox formats
-      const checkboxMatch = line.match(/^(\s*)([-*+]|\d+\.)\s+\[([ xX])\]\s*(.*)$/);
-      
-      if (checkboxMatch) {
-        const [fullMatch, indent, marker, checkState, content] = checkboxMatch;
-        const checked = checkState.toLowerCase() === 'x';
-        
-        console.log(`[markdown-checkbox-preview] Found checkbox at line ${i + 1}: "${line.trim()}"`);
-        
+      const rawLine = lines[i];
+      const line = rawLine;
+
+      // Detect start/end of fenced code blocks: ``` or ```lang
+      const fenceMatch = line.match(/^\s*```(.*)$/);
+      if (fenceMatch) {
+        // Toggle fenced block state
+        inFencedBlock = !inFencedBlock;
+        fenceInfo = fenceMatch[1] ? fenceMatch[1].trim() : '';
+        Logger.debug(`[CodeLens] ${inFencedBlock ? 'Entering' : 'Exiting'} fenced block at line ${i + 1} ${fenceInfo ? `(lang=${fenceInfo})` : ''}`);
+        continue;
+      }
+
+      if (inFencedBlock) {
+        // Skip lines inside fenced blocks
+        continue;
+      }
+
+      const m = line.match(checkboxRe);
+      if (m) {
+        const content = m[1] || '';
+        // Determine checked state by inspecting the exact bracket content
+        const checked = /\[[xX]\]/.test(line);
+
+        Logger.debug(`[CodeLens] ✅ Found checkbox at line ${i + 1}: "${line.trim()}"`);
+
         const range = new vscode.Range(
           new vscode.Position(i, 0),
-          new vscode.Position(i, line.length)
+          new vscode.Position(i, rawLine.length)
         );
 
         items.push({
@@ -118,10 +142,13 @@ export class CheckboxCodeLensProvider implements vscode.CodeLensProvider {
           checked,
           lineNumber: i
         });
+      } else if (line.trim() && line.includes('[') && line.includes(']')) {
+        // Log lines that have bracket patterns but don't match our checkbox regex for debugging
+        Logger.debug(`[CodeLens] ❌ Line ${i + 1} has brackets but doesn't match checkbox pattern: "${line.trim()}"`);
       }
     }
 
-    console.log(`[markdown-checkbox-preview] Total checkboxes found: ${items.length}`);
+    Logger.debug(`[CodeLens] Total checkboxes found: ${items.length}`);
     return items;
   }
 }

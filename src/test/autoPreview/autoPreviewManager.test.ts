@@ -118,7 +118,7 @@ suite('Auto-Preview Manager Tests', () => {
       const testUri = vscode.Uri.file('/test/file.md');
       
       // Initially no panel
-      assert.strictEqual(manager.hasPanel(testUri), false);
+      assert.strictEqual(manager.hasPanel(), false);
       
       // Create and register panel
       mockPanel = vscode.window.createWebviewPanel(
@@ -130,7 +130,7 @@ suite('Auto-Preview Manager Tests', () => {
       manager.registerPanel(mockPanel, testUri);
       
       // Panel should be tracked
-      assert.strictEqual(manager.hasPanel(testUri), true);
+      assert.strictEqual(manager.hasPanel(), true);
     });
 
     test('should unregister panel when explicitly removed', () => {
@@ -143,11 +143,11 @@ suite('Auto-Preview Manager Tests', () => {
       );
       
       manager.registerPanel(mockPanel, testUri);
-      assert.strictEqual(manager.hasPanel(testUri), true);
+      assert.strictEqual(manager.hasPanel(), true);
       
       // Unregister
-      manager.unregisterPanel(testUri);
-      assert.strictEqual(manager.hasPanel(testUri), false);
+      manager.unregisterPanel();
+      assert.strictEqual(manager.hasPanel(), false);
     });
 
     test('should automatically unregister panel on disposal', async () => {
@@ -160,7 +160,7 @@ suite('Auto-Preview Manager Tests', () => {
       );
       
       manager.registerPanel(mockPanel, testUri);
-      assert.strictEqual(manager.hasPanel(testUri), true);
+      assert.strictEqual(manager.hasPanel(), true);
       
       // Dispose panel
       mockPanel.dispose();
@@ -169,7 +169,7 @@ suite('Auto-Preview Manager Tests', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       
       // Should be automatically unregistered
-      assert.strictEqual(manager.hasPanel(testUri), false);
+      assert.strictEqual(manager.hasPanel(), false);
     });
 
     test('should handle multiple panels for different documents', () => {
@@ -182,8 +182,8 @@ suite('Auto-Preview Manager Tests', () => {
       manager.registerPanel(panel1, uri1);
       manager.registerPanel(panel2, uri2);
       
-      assert.strictEqual(manager.hasPanel(uri1), true);
-      assert.strictEqual(manager.hasPanel(uri2), true);
+      assert.strictEqual(manager.hasPanel(), true);
+      assert.strictEqual(manager.hasPanel(), true);
       
       panel1.dispose();
       panel2.dispose();
@@ -369,7 +369,7 @@ suite('Auto-Preview Manager Tests', () => {
       manager.registerPanel(panel1, testUri);
       manager.registerPanel(panel2, testUri); // Should replace first
       
-      assert.strictEqual(manager.hasPanel(testUri), true);
+      assert.strictEqual(manager.hasPanel(), true);
       
       panel1.dispose();
       panel2.dispose();
@@ -380,7 +380,7 @@ suite('Auto-Preview Manager Tests', () => {
       
       // Should not throw
       assert.doesNotThrow(() => {
-        manager.unregisterPanel(testUri);
+        manager.unregisterPanel();
       });
     });
   });

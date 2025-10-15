@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { renderMarkdown, getTaskListCount } from './renderer';
+import { renderMarkdown, getTaskListCount, extractCheckboxStates } from './renderer';
 import { CheckboxTreeDataProvider, CheckboxItem } from './checkboxTree';
 import { CheckboxCodeLensProvider } from './providers/checkboxCodeLensProvider';
 import { CheckboxHoverProvider } from './providers/checkboxHoverProvider';
@@ -47,6 +47,17 @@ export function activate(context: vscode.ExtensionContext) {
   const toggleAutoPreviewDisposable = vscode.commands.registerCommand(
     'checkboxPreview.toggleAutoPreview',
     () => autoPreviewManager.toggleAutoPreview()
+  );
+
+  const toggleDebugDisposable = vscode.commands.registerCommand(
+    'checkboxPreview.toggleDebug',
+    () => {
+      Logger.setVerbose(!Logger.isVerbose());
+      Logger.show();
+      vscode.window.showInformationMessage(
+        `Markdown Checkbox Preview: Debug logging ${Logger.isVerbose() ? 'enabled' : 'disabled'}`
+      );
+    }
   );
 
   const refreshTreeDisposable = vscode.commands.registerCommand('checkboxTree.refresh', () => {
@@ -109,6 +120,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     openPreviewDisposable,
     toggleAutoPreviewDisposable,
+    toggleDebugDisposable,
     refreshTreeDisposable,
     toggleCheckboxDisposable,
     navigateToHeaderDisposable,
@@ -221,6 +233,8 @@ function openCheckboxPreview(
 
   // Handle document changes with debouncing to avoid flooding webview
   let updateTimeout: NodeJS.Timeout | undefined;
+  let isTogglingCheckbox = false;
+  
   const changeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
     if (event.document.uri.toString() === document.uri.toString()) {
       Logger.debug(`Document change detected for ${document.uri.toString()} (${event.contentChanges.length} change(s))`);
@@ -230,17 +244,31 @@ function openCheckboxPreview(
         clearTimeout(updateTimeout);
       }
 
-      // Debounce updates by 150ms to batch rapid changes
+      // Use shorter debounce for checkbox toggles (faster feedback)
+      const debounceTime = isTogglingCheckbox ? 50 : 150;
+      
+      // Debounce updates to batch rapid changes
       updateTimeout = setTimeout(() => {
         const newContent = event.document.getText();
-        const html = renderMarkdown(newContent);
+        
+        if (isTogglingCheckbox) {
+          // For checkbox toggles, send only checkbox states (targeted update)
+          const checkboxStates = extractCheckboxStates(newContent);
+          sendMessage({
+            type: 'syncCheckboxes',
+            checkboxes: checkboxStates
+          });
+        } else {
+          // For other changes, do full rerender
+          const html = renderMarkdown(newContent);
+          sendMessage({
+            type: 'rerender',
+            html: html
+          });
+        }
+        
+        // Always update progress
         const stats = getTaskListCount(newContent);
-
-        sendMessage({
-          type: 'rerender',
-          html: html
-        });
-
         sendMessage({
           type: 'updateProgress',
           completed: stats.completed,
@@ -251,7 +279,10 @@ function openCheckboxPreview(
         if (treeDataProvider) {
           treeDataProvider.refresh();
         }
-      }, 150);
+        
+        // Reset checkbox toggle flag
+        isTogglingCheckbox = false;
+      }, debounceTime);
     }
   });
 
@@ -282,14 +313,43 @@ function openCheckboxPreview(
   // Handle messages from the webview
   panel.webview.onDidReceiveMessage(message => {
     Logger.debug(`Received webview message: ${message.type}`);
+    
+    // Prefer editing the document currently tracked by the preview manager
+    const previewUri = autoPreviewManager?.getCurrentDocumentUri();
+    
     switch (message.type) {
       case 'toggle':
         Logger.debug(`Toggling checkbox at line ${message.line}`);
-        toggleCheckboxAtLine(editor, message.line);
+        isTogglingCheckbox = true;
+        if (previewUri) {
+          toggleCheckboxInDocumentUri(previewUri, message.line);
+        } else {
+          // Fallback to active editor
+          const currentEditor = vscode.window.activeTextEditor;
+          if (currentEditor) {
+            toggleCheckboxAtLine(currentEditor, message.line);
+          } else {
+            Logger.error('No document available to toggle checkbox');
+          }
+        }
         break;
       case 'navigate':
         Logger.debug(`Navigating to line ${message.line}`);
-        navigateToLine(editor, message.line);
+        // Prefer to navigate in the previewed document if available
+        if (previewUri) {
+          const doc = vscode.workspace.textDocuments.find(d => d.uri.toString() === previewUri.toString());
+          const editor = vscode.window.visibleTextEditors.find(e => e.document === doc);
+          if (editor) {
+            navigateToLine(editor, message.line);
+          } else if (doc) {
+            vscode.window.showTextDocument(doc).then(ed => navigateToLine(ed, message.line));
+          }
+        } else {
+          const currentEditor = vscode.window.activeTextEditor;
+          if (currentEditor) {
+            navigateToLine(currentEditor, message.line);
+          }
+        }
         break;
     }
   });
@@ -320,6 +380,8 @@ function openCheckboxPreview(
 function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   const document = editor.document;
 
+  Logger.info(`Toggle checkbox requested: line=${lineNumber}, documentUri=${document.uri.toString()}`);
+
   if (lineNumber >= document.lineCount) {
     Logger.warn(`Toggle requested for line ${lineNumber} beyond document length ${document.lineCount}`);
     return;
@@ -328,20 +390,27 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   const line = document.lineAt(lineNumber);
   const lineText = line.text;
 
+  Logger.debug(`Current line text: "${lineText}"`);
+
   // Match different checkbox patterns
   let updatedText = lineText;
 
   // Handle [ ] -> [x]
   if (lineText.includes('[ ]')) {
     updatedText = lineText.replace(/\[ \]/, '[x]');
+    Logger.debug(`Toggling unchecked -> checked`);
   }
   // Handle [x] -> [ ] (both lowercase and uppercase)
   else if (lineText.match(/\[[xX]\]/)) {
     updatedText = lineText.replace(/\[[xX]\]/, '[ ]');
+    Logger.debug(`Toggling checked -> unchecked`);
+  } else {
+    Logger.warn(`No checkbox pattern found in line ${lineNumber}: "${lineText}"`);
   }
 
   // Apply the edit if there was a change
   if (updatedText !== lineText) {
+    Logger.info(`Applying edit to line ${lineNumber}: "${lineText}" -> "${updatedText}"`);
     editor.edit(editBuilder => {
       editBuilder.replace(line.range, updatedText);
     }).then(success => {
@@ -349,9 +418,11 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
         vscode.window.showErrorMessage('Failed to update checkbox state');
         Logger.error(`Failed to apply checkbox toggle at line ${lineNumber}`);
       } else {
-        Logger.debug(`Checkbox toggled at line ${lineNumber}`);
+        Logger.info(`✅ Checkbox successfully toggled at line ${lineNumber}`);
       }
     });
+  } else {
+    Logger.warn(`No change needed for line ${lineNumber}`);
   }
 }
 
@@ -713,6 +784,45 @@ function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionCon
     <script src="${scriptUri}"></script>
 </body>
 </html>`;
+}
+
+/**
+ * Toggle a checkbox in a document by URI using WorkspaceEdit
+ * Exported for testing purposes
+ * 
+ * @param uri Document URI
+ * @param lineNumber Zero-based line number
+ */
+export async function toggleCheckboxInDocumentUri(uri: vscode.Uri, lineNumber: number): Promise<boolean> {
+  try {
+    const doc = await vscode.workspace.openTextDocument(uri);
+    const line = doc.lineAt(lineNumber);
+    const lineText = line.text;
+
+    let updatedText = lineText;
+    if (/\[ \]/.test(lineText)) {
+      updatedText = lineText.replace(/\[ \]/, '[x]');
+    } else if (/\[[xX]\]/.test(lineText)) {
+      updatedText = lineText.replace(/\[[xX]\]/, '[ ]');
+    } else {
+      Logger.warn(`No checkbox found at line ${lineNumber} in ${uri.toString()}`);
+      return false;
+    }
+
+    const edit = new vscode.WorkspaceEdit();
+    edit.replace(uri, line.range, updatedText);
+    const success = await vscode.workspace.applyEdit(edit);
+    if (!success) {
+      Logger.error(`WorkspaceEdit failed for ${uri.toString()} at line ${lineNumber}`);
+      return false;
+    } else {
+      Logger.info(`Checkbox toggled in document ${uri.toString()} at line ${lineNumber}`);
+      return true;
+    }
+  } catch (err) {
+    Logger.error('Failed to toggle checkbox by URI', err);
+    return false;
+  }
 }
 
 export function deactivate() {
