@@ -159,7 +159,7 @@ function openCheckboxPreview(
   const panel = vscode.window.createWebviewPanel(
     'checkboxPreview',
     `📋 ${fileName} - Interactive Checkboxes`,
-    vscode.ViewColumn.Beside,
+    { viewColumn: vscode.ViewColumn.Two, preserveFocus: true },
     {
       enableScripts: true,
       localResourceRoots: [
