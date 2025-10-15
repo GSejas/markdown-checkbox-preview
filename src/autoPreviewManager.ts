@@ -34,12 +34,14 @@ interface PreviewPanelTracker {
  * - Track open preview panels to prevent duplicates
  * - Handle auto-opening of previews when markdown files are opened
  * - Persist user preferences across sessions
+ * - Manage a SINGLE preview panel that updates when switching files
  * 
  * @class AutoPreviewManager
  */
 export class AutoPreviewManager {
   private statusBarItem: vscode.StatusBarItem;
-  private openPanels: Map<string, vscode.WebviewPanel>;
+  private currentPanel: vscode.WebviewPanel | undefined;
+  private currentDocumentUri: string | undefined;
   private disposables: vscode.Disposable[] = [];
   private openPreviewCallback: () => void;
 
@@ -53,7 +55,6 @@ export class AutoPreviewManager {
     private context: vscode.ExtensionContext,
     openPreviewCallback: () => void
   ) {
-    this.openPanels = new Map();
     this.openPreviewCallback = openPreviewCallback;
     this.statusBarItem = this.createStatusBarItem();
     this.registerEventHandlers();
@@ -147,18 +148,19 @@ export class AutoPreviewManager {
 
     const documentUri = editor.document.uri.toString();
     
-    // Check if preview already exists for this document
-    if (this.openPanels.has(documentUri)) {
-      Logger.debug(`Preview already exists for ${documentUri}; skipping auto-open`);
+    // If panel exists and is showing a different document, just update it (handled by callback)
+    // If panel doesn't exist, create it
+    if (this.currentPanel && this.currentDocumentUri === documentUri) {
+      Logger.debug(`Preview already showing ${documentUri}; skipping auto-open`);
       return;
     }
 
     // Small delay to ensure document is fully loaded
     setTimeout(() => {
-      // Re-check if still active and not already opened
+      // Re-check if still active
       const activeEditor = vscode.window.activeTextEditor;
       if (activeEditor?.document.uri.toString() === documentUri) {
-        Logger.info(`Auto-preview opening for ${documentUri}`);
+        Logger.info(`Auto-preview opening/updating for ${documentUri}`);
         this.openPreviewCallback();
       } else {
         Logger.debug(`Auto-preview skipped for ${documentUri}; active editor changed`);
@@ -232,8 +234,8 @@ export class AutoPreviewManager {
   }
 
   /**
-   * Registers a preview panel for tracking
-   * Call this when a preview panel is created to prevent duplicates
+   * Registers the singleton preview panel
+   * Call this when a preview panel is created or updated
    * 
    * @public
    * @param {vscode.WebviewPanel} panel - The webview panel to track
@@ -241,36 +243,49 @@ export class AutoPreviewManager {
    */
   public registerPanel(panel: vscode.WebviewPanel, documentUri: vscode.Uri): void {
     const uriString = documentUri.toString();
-    this.openPanels.set(uriString, panel);
+    
+    // Store the panel and current document
+    this.currentPanel = panel;
+    this.currentDocumentUri = uriString;
     Logger.debug(`Registered preview panel for ${uriString}`);
 
-    // Automatically unregister when panel is disposed
+    // Automatically clear when panel is disposed
     panel.onDidDispose(() => {
-      this.unregisterPanel(documentUri);
+      this.unregisterPanel();
     });
   }
 
   /**
-   * Unregisters a preview panel from tracking
+   * Unregisters the preview panel (when closed)
    * 
    * @public
-   * @param {vscode.Uri} documentUri - The URI of the document being previewed
    */
-  public unregisterPanel(documentUri: vscode.Uri): void {
-    const uriString = documentUri.toString();
-    this.openPanels.delete(uriString);
-    Logger.debug(`Unregistered preview panel for ${uriString}`);
+  public unregisterPanel(): void {
+    if (this.currentDocumentUri) {
+      Logger.debug(`Unregistered preview panel for ${this.currentDocumentUri}`);
+    }
+    this.currentPanel = undefined;
+    this.currentDocumentUri = undefined;
   }
 
   /**
-   * Checks if a preview panel exists for the given document
+   * Checks if a preview panel currently exists
    * 
    * @public
-   * @param {vscode.Uri} documentUri - The URI of the document to check
-   * @returns {boolean} True if a panel exists for this document
+   * @returns {boolean} True if a panel exists
    */
-  public hasPanel(documentUri: vscode.Uri): boolean {
-    return this.openPanels.has(documentUri.toString());
+  public hasPanel(): boolean {
+    return this.currentPanel !== undefined && !this.currentPanel.visible === false;
+  }
+
+  /**
+   * Gets the current panel if it exists
+   * 
+   * @public
+   * @returns {vscode.WebviewPanel | undefined} The current panel or undefined
+   */
+  public getCurrentPanel(): vscode.WebviewPanel | undefined {
+    return this.currentPanel;
   }
 
   /**
@@ -302,6 +317,8 @@ export class AutoPreviewManager {
   public dispose(): void {
     this.statusBarItem.dispose();
     this.disposables.forEach(d => d.dispose());
-    this.openPanels.clear();
+    if (this.currentPanel) {
+      this.currentPanel.dispose();
+    }
   }
 }

@@ -148,14 +148,27 @@ function openCheckboxPreview(
   const document = editor.document;
   const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
 
-  Logger.debug(`Opening preview for ${document.uri.toString()} (silent=${options?.silent ?? false})`);
+  Logger.debug(`Opening/updating preview for ${document.uri.toString()} (silent=${options?.silent ?? false})`);
 
-  // Check if panel already exists for this document (via auto-preview manager)
-  if (autoPreviewManager?.hasPanel(document.uri)) {
-    if (!options?.silent) {
-      vscode.window.showInformationMessage('Preview is already open for this file.');
+  // Check if we have an existing panel - if so, update it instead of creating new
+  const existingPanel = autoPreviewManager?.getCurrentPanel();
+  if (existingPanel) {
+    Logger.info(`Reusing existing preview panel, updating content for ${document.uri.toString()}`);
+    
+    // Update panel title
+    existingPanel.title = `📋 ${fileName} - Interactive Checkboxes`;
+    
+    // Update panel content
+    existingPanel.webview.html = getWebviewContent(existingPanel.webview, context, document.getText());
+    
+    // Register as current document
+    if (autoPreviewManager) {
+      autoPreviewManager.registerPanel(existingPanel, document.uri);
     }
-    Logger.debug(`Preview already open for ${document.uri.toString()}, skipping new panel`);
+    
+    // Reveal the panel (bring to front)
+    existingPanel.reveal(vscode.ViewColumn.Two, true);
+    
     return;
   }
 
