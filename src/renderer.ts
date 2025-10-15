@@ -73,6 +73,21 @@ export function renderMarkdown(text: string): string {
     }
   });
 
+  // Add line numbers to all block-level elements for scroll sync
+  md.core.ruler.after('task_list_items', 'add_line_numbers', (state: any) => {
+    const tokens = state.tokens;
+    
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      
+      // Add data-line to block-level opening tags
+      if (token.type.endsWith('_open') && token.map && token.map.length > 0) {
+        const lineNumber = token.map[0];
+        token.attrSet('data-source-line', lineNumber.toString());
+      }
+    }
+  });
+
   return md.render(text);
 }
 

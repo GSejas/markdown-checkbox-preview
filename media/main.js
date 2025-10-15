@@ -15,8 +15,42 @@
       case 'updateProgress':
         updateProgressBar(message.completed, message.total);
         break;
+      case 'scroll':
+        scrollToLine(message.line);
+        break;
     }
   });
+
+  // Synchronized scrolling: scroll preview to match editor line
+  function scrollToLine(line) {
+    // Find the element closest to the target line
+    const elements = document.querySelectorAll('[data-source-line], [data-line]');
+    let targetElement = null;
+    let closestDistance = Infinity;
+
+    for (const element of elements) {
+      const elementLine = parseInt(element.dataset.sourceLine || element.dataset.line, 10);
+      if (!isNaN(elementLine)) {
+        const distance = Math.abs(elementLine - line);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          targetElement = element;
+        }
+        // If we found an exact match, use it
+        if (elementLine === line) {
+          break;
+        }
+      }
+    }
+
+    if (targetElement) {
+      // Smooth scroll to the element
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
 
   // Handle checkbox clicks and header clicks
   document.body.addEventListener('click', event => {

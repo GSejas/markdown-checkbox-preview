@@ -242,6 +242,30 @@ function openCheckboxPreview(
     }
   });
 
+  // Synchronized scrolling: editor -> preview
+  let scrollTimeout: NodeJS.Timeout | undefined;
+  const scrollDisposable = vscode.window.onDidChangeTextEditorVisibleRanges(event => {
+    if (event.textEditor.document.uri.toString() === document.uri.toString()) {
+      // Clear existing timeout to debounce rapid scroll events
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+
+      scrollTimeout = setTimeout(() => {
+        const visibleRanges = event.visibleRanges;
+        if (visibleRanges.length > 0) {
+          const topLine = visibleRanges[0].start.line;
+          Logger.debug(`Editor scrolled to line ${topLine} for ${document.uri.toString()}`);
+          
+          sendMessage({
+            type: 'scroll',
+            line: topLine
+          });
+        }
+      }, 50); // Faster than document changes for smooth scrolling
+    }
+  });
+
   // Handle messages from the webview
   panel.webview.onDidReceiveMessage(message => {
     Logger.debug(`Received webview message: ${message.type}`);
@@ -262,12 +286,16 @@ function openCheckboxPreview(
     if (updateTimeout) {
       clearTimeout(updateTimeout);
     }
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
     changeDisposable.dispose();
+    scrollDisposable.dispose();
     Logger.debug(`Disposed preview panel for ${document.uri.toString()}`);
     // Auto-preview manager automatically unregisters via its own onDidDispose handler
   });
 
-  context.subscriptions.push(changeDisposable);
+  context.subscriptions.push(changeDisposable, scrollDisposable);
 }
 
 /**
