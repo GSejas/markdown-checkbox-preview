@@ -10,6 +10,7 @@
  */
 
 import * as vscode from 'vscode';
+import { Logger } from './logger';
 
 /**
  * Configuration namespace for accessing extension settings
@@ -111,6 +112,7 @@ export class AutoPreviewManager {
     // Only show status bar button for markdown files
     if (editor.document.languageId === 'markdown') {
       this.statusBarItem.show();
+      Logger.debug(`Active editor changed to markdown file ${editor.document.uri.toString()}`);
       this.attemptAutoOpenPreview(editor);
     } else {
       this.statusBarItem.hide();
@@ -139,6 +141,7 @@ export class AutoPreviewManager {
     const autoPreviewEnabled = this.isAutoPreviewEnabled();
     
     if (!autoPreviewEnabled) {
+      Logger.debug('Auto-preview disabled; not opening preview');
       return;
     }
 
@@ -146,6 +149,7 @@ export class AutoPreviewManager {
     
     // Check if preview already exists for this document
     if (this.openPanels.has(documentUri)) {
+      Logger.debug(`Preview already exists for ${documentUri}; skipping auto-open`);
       return;
     }
 
@@ -154,7 +158,10 @@ export class AutoPreviewManager {
       // Re-check if still active and not already opened
       const activeEditor = vscode.window.activeTextEditor;
       if (activeEditor?.document.uri.toString() === documentUri) {
+        Logger.info(`Auto-preview opening for ${documentUri}`);
         this.openPreviewCallback();
+      } else {
+        Logger.debug(`Auto-preview skipped for ${documentUri}; active editor changed`);
       }
     }, 100);
   }
@@ -209,6 +216,7 @@ export class AutoPreviewManager {
       );
 
       this.updateStatusBarButton();
+      Logger.info(`Auto-preview toggled ${newValue ? 'on' : 'off'}`);
 
       // Show user feedback (disabled per user request)
       // const status = newValue ? 'enabled' : 'disabled';
@@ -216,6 +224,7 @@ export class AutoPreviewManager {
       //   `Auto-Preview ${status}. ${newValue ? 'Previews will open automatically when you open markdown files.' : 'Previews will only open manually.'}`
       // );
     } catch (error) {
+      Logger.error('Failed to toggle auto-preview', error);
       vscode.window.showErrorMessage(
         `Failed to toggle auto-preview: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -233,6 +242,7 @@ export class AutoPreviewManager {
   public registerPanel(panel: vscode.WebviewPanel, documentUri: vscode.Uri): void {
     const uriString = documentUri.toString();
     this.openPanels.set(uriString, panel);
+    Logger.debug(`Registered preview panel for ${uriString}`);
 
     // Automatically unregister when panel is disposed
     panel.onDidDispose(() => {
@@ -249,6 +259,7 @@ export class AutoPreviewManager {
   public unregisterPanel(documentUri: vscode.Uri): void {
     const uriString = documentUri.toString();
     this.openPanels.delete(uriString);
+    Logger.debug(`Unregistered preview panel for ${uriString}`);
   }
 
   /**

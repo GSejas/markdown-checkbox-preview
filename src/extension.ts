@@ -4,9 +4,10 @@ import { CheckboxTreeDataProvider, CheckboxItem } from './checkboxTree';
 import { CheckboxCodeLensProvider } from './providers/checkboxCodeLensProvider';
 import { CheckboxHoverProvider } from './providers/checkboxHoverProvider';
 import { AutoPreviewManager } from './autoPreviewManager';
+import { Logger } from './logger';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Markdown Checkbox Preview extension is now active!');
+  Logger.info('Markdown Checkbox Preview extension activated');
 
   // Create the tree data provider
   const treeDataProvider = new CheckboxTreeDataProvider(context);
@@ -147,11 +148,14 @@ function openCheckboxPreview(
   const document = editor.document;
   const fileName = document.fileName.split(/[\\/]/).pop() || 'Untitled';
 
+  Logger.debug(`Opening preview for ${document.uri.toString()} (silent=${options?.silent ?? false})`);
+
   // Check if panel already exists for this document (via auto-preview manager)
   if (autoPreviewManager?.hasPanel(document.uri)) {
     if (!options?.silent) {
       vscode.window.showInformationMessage('Preview is already open for this file.');
     }
+    Logger.debug(`Preview already open for ${document.uri.toString()}, skipping new panel`);
     return;
   }
 
@@ -169,8 +173,21 @@ function openCheckboxPreview(
     }
   );
 
+  Logger.info(`Created preview panel for ${document.uri.toString()} in column two`);
+
+  const sendMessage = (message: { type: string; [key: string]: unknown }) => {
+    panel.webview.postMessage(message).then(sent => {
+      if (!sent) {
+        Logger.warn(`Webview message of type ${message.type} was not delivered`);
+      }
+    }, (error: unknown) => {
+      Logger.error(`Failed to post webview message of type ${message.type}`, error);
+    });
+  };
+
   // Set the initial HTML content
   panel.webview.html = getWebviewContent(panel.webview, context, document.getText());
+  Logger.debug(`Initial preview content rendered for ${document.uri.toString()}`);
 
   // Register panel with auto-preview manager to prevent duplicates
   if (autoPreviewManager) {
@@ -180,16 +197,17 @@ function openCheckboxPreview(
   // Handle document changes
   const changeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
     if (event.document.uri.toString() === document.uri.toString()) {
+      Logger.debug(`Document change detected for ${document.uri.toString()} (${event.contentChanges.length} change(s))`);
       const newContent = event.document.getText();
       const html = renderMarkdown(newContent);
       const stats = getTaskListCount(newContent);
 
-      panel.webview.postMessage({
+      sendMessage({
         type: 'rerender',
         html: html
       });
 
-      panel.webview.postMessage({
+      sendMessage({
         type: 'updateProgress',
         completed: stats.completed,
         total: stats.total
@@ -204,11 +222,14 @@ function openCheckboxPreview(
 
   // Handle messages from the webview
   panel.webview.onDidReceiveMessage(message => {
+    Logger.debug(`Received webview message: ${message.type}`);
     switch (message.type) {
       case 'toggle':
+        Logger.debug(`Toggling checkbox at line ${message.line}`);
         toggleCheckboxAtLine(editor, message.line);
         break;
       case 'navigate':
+        Logger.debug(`Navigating to line ${message.line}`);
         navigateToLine(editor, message.line);
         break;
     }
@@ -217,6 +238,7 @@ function openCheckboxPreview(
   // Clean up when panel is disposed
   panel.onDidDispose(() => {
     changeDisposable.dispose();
+    Logger.debug(`Disposed preview panel for ${document.uri.toString()}`);
     // Auto-preview manager automatically unregisters via its own onDidDispose handler
   });
 
@@ -233,6 +255,7 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
   const document = editor.document;
 
   if (lineNumber >= document.lineCount) {
+    Logger.warn(`Toggle requested for line ${lineNumber} beyond document length ${document.lineCount}`);
     return;
   }
 
@@ -258,6 +281,9 @@ function toggleCheckboxAtLine(editor: vscode.TextEditor, lineNumber: number) {
     }).then(success => {
       if (!success) {
         vscode.window.showErrorMessage('Failed to update checkbox state');
+        Logger.error(`Failed to apply checkbox toggle at line ${lineNumber}`);
+      } else {
+        Logger.debug(`Checkbox toggled at line ${lineNumber}`);
       }
     });
   }
